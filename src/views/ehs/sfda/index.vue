@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <JungtTable></JungtTable>
+    <!--    <JungtTable></JungtTable>-->
     <Chart />
   </div>
 </template>

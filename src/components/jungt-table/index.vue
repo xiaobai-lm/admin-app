@@ -3,22 +3,31 @@
 </template>
 
 <script lang="ts" setup>
-  import { onMounted, ref } from 'vue';
-  import { ListTable, themes, ColumnsDefine } from '@visactor/vtable';
+  import { ref, watch } from 'vue';
+  import {
+    ColumnsDefine,
+    ListTable,
+    ListTableConstructorOptions,
+    themes,
+  } from '@visactor/vtable';
 
-  const { columns, records } = defineProps<{
+  const props = defineProps<{
     columns: ColumnsDefine;
-    records: any[];
+    record: any[];
   }>();
   const tableRef = ref();
-  const options = ref<any>({
-    columns,
-    records,
+  const options: ListTableConstructorOptions = {
+    columns: props.columns,
+    records: props.record,
     theme: themes.ARCO,
     widthMode: 'adaptive',
-  });
+  };
 
-  onMounted(() => {
-    return new ListTable(tableRef.value, options.value);
-  });
+  watch(
+    () => props.record,
+    (newVal) => {
+      options.records = newVal;
+      return new ListTable(tableRef.value, options);
+    }
+  );
 </script>
