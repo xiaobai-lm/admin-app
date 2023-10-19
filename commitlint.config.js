@@ -87,7 +87,6 @@ module.exports = {
     maxHeaderLength: Infinity,
     maxSubjectLength: Infinity,
     minSubjectLength: 0,
-    scopeOverrides: undefined,
     defaultBody: '',
     defaultIssues: '',
     defaultScope: '',
