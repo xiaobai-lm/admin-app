@@ -1,5 +1,5 @@
 export default {
-  'menu.ehs.product': '产品线表',
+  'menu.ehs.product': '产品线分类表',
   'workplace.welcome': '欢迎回来！',
   'workplace.balance': '余额（元）',
   'workplace.order.pending': '待支付',

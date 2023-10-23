@@ -1,4 +1,6 @@
 <script setup lang="ts">
+  import { onMounted, ref } from 'vue';
+
   interface ProductLine {
     id: number;
     bu: string;
@@ -13,91 +15,81 @@
     updatedTime: string;
   }
 
-  const option = {
-    columns: [
-      {
-        field: 'ID',
-        title: 'ID',
-        sort: true,
-        width: 'auto',
-      },
-      {
-        field: 'BU',
-        title: 'BU',
-      },
-      {
-        field: 'Model',
-        title: '类别',
-      },
-      {
-        field: 'Product Name (CN)',
-        title: 'Product Name (CN)',
-      },
-      {
-        field: 'Product Name (EN)',
-        title: 'Product Name (EN)',
-      },
-      {
-        field: 'Category Table',
-        title: 'Category Table',
-      },
-      {
-        field: 'Registration Certificate No.',
-        title: 'Registration Certificate No.',
-      },
-      {
-        field: 'Created Time',
-        title: '创建时间',
-      },
-    ],
-    records: [
-      {
-        'ID': 'CN-2019-1973789',
-        'BU': '标准级',
-        'Model': '办公用品',
-        'Product Name (CN)': '信封',
-        'Product Name (EN)': '125.44',
-        'Category Table': '125.44',
-        'Registration Certificate No.': '125.44',
-        'Created Time': '125.44',
-      },
-      {
-        'ID': 'CN-2019-1973789',
-        'BU': '标准级',
-        'Model': '办公用品',
-        'Product Name (CN)': '信封',
-        'Product Name (EN)': '125.44',
-        'Category Table': '125.44',
-        'Registration Certificate No.': '125.44',
-        'Created Time': '125.44',
-      },
-      {
-        'ID': 'CN-2019-1973789',
-        'BU': '标准级',
-        'Model': '办公用品',
-        'Product Name (CN)': '信封',
-        'Product Name (EN)': '125.44',
-        'Category Table': '125.44',
-        'Registration Certificate No.': '125.44',
-        'Created Time': '125.44',
-      },
-      {
-        'ID': 'CN-2019-1973789',
-        'BU': '标准级',
-        'Model': '办公用品',
-        'Product Name (CN)': '信封',
-        'Product Name (EN)': '125.44',
-        'Category Table': '125.44',
-        'Registration Certificate No.': '125.44',
-        'Created Time': '125.44',
-      },
-    ],
+  const columns = [
+    {
+      field: 'id',
+      title: 'ID',
+      sort: true,
+      width: 'auto',
+    },
+    {
+      field: 'bu',
+      title: 'BU',
+    },
+    {
+      field: 'model',
+      title: '类别',
+    },
+    {
+      field: 'productNameCn',
+      title: 'Product Name (CN)',
+    },
+    {
+      field: 'productNameEn',
+      title: 'Product Name (EN)',
+    },
+    {
+      field: 'categoryTable',
+      title: 'Category Table',
+    },
+    {
+      field: 'registrationCertificateNo',
+      title: 'Registration Certificate No.',
+    },
+    {
+      field: 'usedRegistrationNumber',
+      title: 'UsedRegistrationNumber',
+    },
+    {
+      field: 'features',
+      title: 'Features',
+    },
+    {
+      field: 'createdTime',
+      title: '创建时间',
+    },
+  ];
+  const records = ref<ProductLine[]>([]);
+  const total = ref(0);
+
+  const handlePaginationChange = async (current: number) => {
+    const res = await fetch(
+      `https://106.14.32.178:8080/api/ehs/product-line/${current}/20`
+    );
+    const productLine = await res.json();
+    records.value = productLine.data.list;
+    total.value = productLine.data.total.value;
   };
+
+  onMounted(async () => {
+    const res = await fetch(
+      'https://106.14.32.178:8080/api/ehs/product-line/1/20'
+    );
+    const productLine = await res.json();
+    records.value = productLine.data.list;
+    total.value = productLine.data.total.value;
+  });
 </script>
 
 <template>
-  <div>
-    <JungtTable :columns="option.columns" :records="option.records" />
+  <div class="bg-white mxy rounded pxy flex flex-col items-end">
+    <JungtTable :columns="columns" :record="records" />
+    <APagination
+      class="mt"
+      size="large"
+      :total="total"
+      @change="handlePaginationChange"
+    />
   </div>
 </template>
 
