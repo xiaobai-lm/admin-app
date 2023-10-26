@@ -16,7 +16,7 @@ export default function handleError(Vue: App, baseUrl: string) {
       instance,
       info,
       // location: window.location.href,
-      // message: err.message,
+      // messagex: err.messagex,
       // stack: err.stack,
       // browserInfo: getBrowserInfo(),
       // user info

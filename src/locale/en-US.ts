@@ -2,6 +2,10 @@ import localeMessageBox from '@/components/message-box/locale/en-US';
 import localeLogin from '@/views/login/locale/en-US';
 
 import localeWorkplace from '@/views/dashboard/workplace/locale/en-US';
+import localeCare from '@/views/management/care/locale/en-US';
+import localeRoster from '@/views/management/roster/locale/en-US';
+import localeAttendance from '@/views/management/attendance/locale/zh-CN';
+import localeStatistics from '@/views/management/statistics/locale/zh-CN';
 
 import localeSettings from './en-US/settings';
 
@@ -25,4 +29,8 @@ export default {
   ...localeMessageBox,
   ...localeLogin,
   ...localeWorkplace,
+  ...localeCare,
+  ...localeRoster,
+  ...localeAttendance,
+  ...localeStatistics,
 };
