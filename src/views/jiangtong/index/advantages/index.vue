@@ -89,17 +89,25 @@
     },
   ]);
   const visible = ref(false);
+  const from: any = reactive([]);
   const form = reactive({
     name: '',
     post: '',
   });
 
-  const handleClick = () => {
+  const handleClick = (record: any) => {
     visible.value = true;
+    // console.log(record);
+    from.push(record);
+    // console.log(from);
   };
 
   const handleCancel = () => {
     visible.value = false;
+    console.log('1');
+  };
+  const handleBeforeOk = (done: any) => {
+    console.log(from);
   };
 </script>
 
@@ -110,16 +118,17 @@
   >
     <div style="margin: 20px 20px 0 20px">
       <a-table :columns="columns" :data="data">
-        <template #buttonBj>
-          <a-button type="text" @click="handleClick">编辑</a-button>
+        <template #buttonBj="{ record }">
+          <a-button type="text" @click="handleClick(record)">编辑</a-button>
           <a-modal
             v-model:visible="visible"
             title="编辑数据"
             width="600px"
             @cancel="handleCancel"
+            @before-ok="handleBeforeOk"
           >
             <div>
-              <a-form :model="form" layout="vertical">
+              <a-form :model="from" layout="vertical">
                 <a-form-item
                   field="name"
                   label="id"
@@ -128,7 +137,7 @@
                   disabled
                   style="width: 50px"
                 >
-                  <a-input v-model="data[0].id" />
+                  <a-input v-model="from[0].id" />
                 </a-form-item>
 
                 <div style="display: flex"
@@ -138,7 +147,7 @@
                     style="width: 130px; margin-right: 30px"
                     required
                   >
-                    <a-input v-model="data[0].title" />
+                    <a-input v-model="from[0].title" />
                   </a-form-item>
                   <a-form-item field="id" label="内容" required>
                     <a-textarea

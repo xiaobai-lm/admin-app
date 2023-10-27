@@ -1,5 +1,6 @@
 <script setup lang="ts">
-  import { reactive, ref } from 'vue';
+  import { reactive, ref, onMounted } from 'vue';
+  import { getBrief } from '@/api/message';
 
   const show = ref(true);
 
@@ -10,37 +11,37 @@
     },
     {
       title: '内容',
-      dataIndex: 'name',
+      dataIndex: 'content',
       ellipsis: true,
       tooltip: true,
     },
     {
       title: '标签1',
-      dataIndex: 'a',
+      dataIndex: 'tagA',
     },
     {
       title: '标签1蓝字',
-      dataIndex: 'a1',
+      dataIndex: 'tagANumber',
     },
     {
       title: '标签2',
-      dataIndex: 'b',
+      dataIndex: 'tagB',
     },
     {
       title: '标签2蓝字',
-      dataIndex: 'b1',
+      dataIndex: 'tagBNumber',
     },
     {
       title: '标签3',
-      dataIndex: 'c',
+      dataIndex: 'tagC',
     },
     {
       title: '标签3蓝字',
-      dataIndex: 'c1',
+      dataIndex: 'tagCNumber',
     },
     {
       title: '创建日期',
-      dataIndex: 'time',
+      dataIndex: 'createdTime',
       sortable: {
         sortDirections: ['ascend', 'descend'],
       },
@@ -50,21 +51,18 @@
       slotName: 'buttonBj',
     },
   ];
-  const data = reactive([
-    {
-      key: '1',
-      name:
-        '上海疆通科技有限公司是高新技术企业、科技型中小企业、上海市华东师范大学毕业生实习基地、上海市人工智能行业协会会员单位，拥有电子与智能化工程专业承包二级资质和ISO9001质量体系认证，公司拥有软硬件自主研发能力，一直致力于智能应急处置系统和数据中心的智能化建设。\n' +
-        '          主营业务是以物联传感为依托、以算法模型赋能、以MR图文呈现，实现IT/OT/MR互通的低代码系统集成方案，赋能企业顺利开展数字化转型。',
-      a: '标签覆盖',
-      a1: '200',
-      b: '自研产品',
-      b1: '15',
-      c: '合作产业',
-      c1: '30',
-      time: '2023-09-18 14:36',
-      management: '',
-    },
+  const data: any = reactive([
+    // {
+    //   id: '1',
+    //   content: '',
+    //   tagA: '',
+    //   tagANumber: '',
+    //   tagB: '',
+    //   tagBNumber: '',
+    //   tagC: '',
+    //   tagCNumber: '',
+    //   createdTime: '',
+    // },
   ]);
   const visible = ref(false);
   const form = reactive({
@@ -79,6 +77,11 @@
   const handleCancel = () => {
     visible.value = false;
   };
+
+  onMounted(async () => {
+    const briefMessage = await getBrief();
+    data.push(...briefMessage.data);
+  });
 </script>
 
 <template>
@@ -87,9 +90,9 @@
     style="height: 500px; border-radius: 10px"
   >
     <div style="margin: 20px 20px 0 20px"
-      ><a-table :columns="columns" :data="data">
+      ><a-table v-if="data" :columns="columns" :data="data">
         <template #optional>
-          <a-link href="#">视频链接</a-link>
+          <a-link :href="data[0].url">视频链接</a-link>
         </template>
         <template #buttonBj>
           <a-button type="text" @click="handleClick">编辑</a-button>
@@ -124,7 +127,7 @@
                 </a-form-item>
                 <a-form-item field="name" label="内容">
                   <a-textarea
-                    v-model="data[0].name"
+                    v-model="data[0].content"
                     max-length="300"
                     show-word-limit
                     auto-size
@@ -137,7 +140,7 @@
                     style="width: 130px; margin-right: 30px"
                     required
                   >
-                    <a-input v-model="data[0].a" />
+                    <a-input v-model="data[0].tagA" />
                   </a-form-item>
                   <a-form-item field="id" label="标签1蓝字" required>
                     <a-textarea

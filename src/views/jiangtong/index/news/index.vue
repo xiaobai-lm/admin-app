@@ -1,6 +1,7 @@
 <script setup lang="ts">
   import { reactive, ref } from 'vue';
   import { IconEdit, IconPlus } from '@arco-design/web-vue/es/icon';
+  import { getText } from '@/api/message';
 
   const file = ref();
   const onChange = (_, currentFile) => {
@@ -87,8 +88,10 @@
     post: '',
   });
 
-  const handleClick = () => {
+  const handleClick = async () => {
     visible.value = true;
+    const a = await getText();
+    console.log(a);
   };
   const handleClick1 = () => {
     visible1.value = true;

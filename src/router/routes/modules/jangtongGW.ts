@@ -97,6 +97,59 @@ const DASHBOARD: AppRouteRecordRaw = {
         },
       ],
     },
+    {
+      path: 'about',
+      name: 'About',
+      component: () => import('@/views/jiangtong/about/index.vue'),
+      meta: {
+        locale: 'menu.jiangtong.about',
+        requiresAuth: true,
+        roles: ['*'],
+      },
+      children: [
+        {
+          path: 'culture',
+          name: 'Culture',
+          component: () => import('@/views/jiangtong/about/culture/index.vue'),
+          meta: {
+            locale: 'menu.jiangtong.about.culture',
+            requiresAuth: true,
+            roles: ['*'],
+          },
+        },
+        {
+          path: 'certificate',
+          name: 'Certificate',
+          component: () =>
+            import('@/views/jiangtong/about/certificate/index.vue'),
+          meta: {
+            locale: 'menu.jiangtong.about.certificate',
+            requiresAuth: true,
+            roles: ['*'],
+          },
+        },
+        {
+          path: 'business',
+          name: 'Business',
+          component: () => import('@/views/jiangtong/about/business/index.vue'),
+          meta: {
+            locale: 'menu.jiangtong.about.business',
+            requiresAuth: true,
+            roles: ['*'],
+          },
+        },
+        {
+          path: 'customer',
+          name: 'Customer',
+          component: () => import('@/views/jiangtong/about/customer/index.vue'),
+          meta: {
+            locale: 'menu.jiangtong.about.customer',
+            requiresAuth: true,
+            roles: ['*'],
+          },
+        },
+      ],
+    },
   ],
 };
 

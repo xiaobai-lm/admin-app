@@ -19,6 +19,12 @@ import localeCase from '@/views/jiangtong/index/case/locale/zh-CN';
 import localeNews from '@/views/jiangtong/index/news/locale/zh-CN';
 import localeMessage from '@/views/jiangtong/index/message/locale/zh-CN';
 
+import localeAbout from '@/views/jiangtong/about/locale/zh-CN';
+import localeCulture from '@/views/jiangtong/about/culture/locale/zh-CN';
+import localeCertificate from '@/views/jiangtong/about/certificate/locale/zh-CN';
+import localeBusiness from '@/views/jiangtong/about/business/locale/zh-CN';
+import localeCustomer from '@/views/jiangtong/about/customer/locale/zh-CN';
+
 import localeSettings from './zh-CN/settings';
 
 export default {
@@ -59,4 +65,9 @@ export default {
   ...localeCase,
   ...localeNews,
   ...localeMessage,
+  ...localeAbout,
+  ...localeCulture,
+  ...localeCertificate,
+  ...localeBusiness,
+  ...localeCustomer,
 };
