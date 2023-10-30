@@ -108,6 +108,11 @@
   };
   const handleBeforeOk = (done: any) => {
     console.log(from);
+    window.setTimeout(() => {
+      done();
+      // prevent close
+      // done(false)
+    }, 3000);
   };
 </script>
 

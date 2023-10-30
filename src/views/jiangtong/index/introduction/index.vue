@@ -78,6 +78,15 @@
     visible.value = false;
   };
 
+  const handleBeforeOk = (done: any) => {
+    console.log(data);
+    window.setTimeout(() => {
+      done();
+      // prevent close
+      // done(false)
+    }, 3000);
+  };
+
   onMounted(async () => {
     const briefMessage = await getBrief();
     data.push(...briefMessage.data);
@@ -101,6 +110,7 @@
             title="编辑数据"
             width="600px"
             @cancel="handleCancel"
+            @before-ok="handleBeforeOk"
           >
             <div>
               <a-form :model="form" layout="vertical">
@@ -112,7 +122,7 @@
                   disabled
                   style="width: 50px"
                 >
-                  <a-input v-model="data[0].key" />
+                  <a-input v-model="data[0].id" />
                 </a-form-item>
                 <a-form-item
                   field="post"
@@ -144,7 +154,7 @@
                   </a-form-item>
                   <a-form-item field="id" label="标签1蓝字" required>
                     <a-textarea
-                      v-model="data[0].a1"
+                      v-model="data[0].tagANumber"
                       cols="57"
                       rows="8"
                       max-length="200"
@@ -159,11 +169,11 @@
                     style="width: 130px; margin-right: 30px"
                     required
                   >
-                    <a-input v-model="data[0].b" />
+                    <a-input v-model="data[0].tagB" />
                   </a-form-item>
                   <a-form-item field="id" label="标签2蓝字" required>
                     <a-textarea
-                      v-model="data[0].b1"
+                      v-model="data[0].tagBNumber"
                       cols="57"
                       rows="8"
                       max-length="200"
@@ -178,11 +188,11 @@
                     style="width: 130px; margin-right: 30px"
                     required
                   >
-                    <a-input v-model="data[0].c" />
+                    <a-input v-model="data[0].tagC" />
                   </a-form-item>
                   <a-form-item field="id" label="标签3蓝字" required>
                     <a-textarea
-                      v-model="data[0].c1"
+                      v-model="data[0].tagCNumber"
                       cols="57"
                       rows="8"
                       max-length="200"
