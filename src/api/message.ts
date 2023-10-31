@@ -41,6 +41,14 @@ export function getAdvantages() {
 export function postAdvantages(data: any) {
   return axios.post<MessageListType>('/api/advantage', data);
 }
+// 技术能力api
+export function getTechnique() {
+  return axios.get<MessageListType>('/api/solution');
+}
+export function postTechnique(data: any) {
+  return axios.post<MessageListType>('/api/solution', data);
+}
+
 //  文件上传api
 export function postSystem(data: any) {
   return axios.post<MessageListType>('/api/system/upload', data);

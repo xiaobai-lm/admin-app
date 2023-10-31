@@ -1,18 +1,19 @@
 <script setup lang="ts">
-  import { IconEdit, IconPlus } from '@arco-design/web-vue/es/icon';
-  import { reactive, ref } from 'vue';
+  import { IconEdit } from '@arco-design/web-vue/es/icon';
+  import { reactive, ref, onMounted } from 'vue';
+  import { getTechnique, postTechnique } from '@/api/message';
 
   const show = ref(true);
 
   const file = ref();
 
-  const onChange = (_, currentFile) => {
+  const onChange = (_: any, currentFile: any) => {
     file.value = {
       ...currentFile,
       // url: URL.createObjectURL(currentFile.file),
     };
   };
-  const onProgress = (currentFile) => {
+  const onProgress = (currentFile: any) => {
     file.value = currentFile;
   };
 
@@ -29,15 +30,15 @@
     },
     {
       title: '标注',
-      dataIndex: 'mark',
+      dataIndex: 'line',
     },
     {
       title: '图标',
-      dataIndex: 'img',
+      slotName: 'icon',
     },
     {
       title: '创建日期',
-      dataIndex: 'time',
+      dataIndex: 'createdTime',
       sortable: {
         sortDirections: ['ascend', 'descend'],
       },
@@ -47,60 +48,52 @@
       slotName: 'buttonBj',
     },
   ];
-  const data = reactive([
+  const data: any = reactive([]);
+  const visible = ref(false);
+  const form: any = reactive([
     {
-      key: '1',
+      content: '',
+      createdTime: '',
+      icon: '',
       id: 1,
-      mark: '超前预警',
-      title: '感知:',
-      content: '发现问题',
-      img: 'img1',
-      time: '2023-09-18 14:36',
-    },
-    {
-      key: '2',
-      id: 2,
-
-      mark: '算法推演',
-      title: '建模:',
-      content: '分析问题',
-      img: 'img1',
-      time: '2023-09-18 14:36',
-    },
-    {
-      key: '3',
-      id: 3,
-
-      mark: '协同处置',
-      title: '行为:',
-      content: '解决问题',
-      img: 'img1',
-      time: '2023-09-18 14:36',
-    },
-    {
-      key: '4',
-      id: 4,
-
-      mark: 'IT/OT低代码互联',
-      title: '重构:',
-      content: '复盘问题',
-      img: 'img1',
-      time: '2023-09-18 14:36',
+      line: '',
+      title: '',
     },
   ]);
-  const visible = ref(false);
-  const form = reactive({
-    name: '',
-    post: '',
-  });
 
-  const handleClick = () => {
+  const handleClick = (record: any) => {
     visible.value = true;
+    form.push(record);
   };
 
   const handleCancel = () => {
     visible.value = false;
+    form.splice(1, 1);
   };
+  const handleBeforeOk = async (done: any) => {
+    console.log(form[1]);
+    await postTechnique(form[1]);
+    const techniqueList1 = await getTechnique();
+    data.splice(0);
+    data.push(...techniqueList1.data);
+    window.setTimeout(() => {
+      done();
+      form.splice(1, 1);
+      // prevent close
+      // done(false)
+    }, 1000);
+  };
+  const onSuccess = (fileItem: any) => {
+    console.log(fileItem);
+    form[1].icon = fileItem.response.data;
+  };
+  // computed(() => {
+  //   const id = data[0].id;
+  // });
+  onMounted(async () => {
+    const techniqueList = await getTechnique();
+    data.push(...techniqueList.data);
+  });
 </script>
 
 <template>
@@ -110,62 +103,68 @@
   >
     <div style="margin: 20px"
       ><a-table :columns="columns" :data="data">
-        <template #buttonBj>
-          <a-button type="text" @click="handleClick">编辑</a-button>
+        <template #icon="{ record }">
+          <a-image :src="record.icon" height="50xp"></a-image>
+        </template>
+
+        <template #buttonBj="{ record }">
+          <a-button type="text" @click="handleClick(record)">编辑</a-button>
           <a-modal
             v-model:visible="visible"
             title="编辑数据"
             width="600px"
             @cancel="handleCancel"
+            @before-ok="handleBeforeOk"
           >
-            <div>
+            <div v-if="form[1]">
               <a-form :model="form" layout="vertical">
                 <a-form-item
-                  field="name"
-                  label="id"
                   required
                   asterisk-position="end"
                   disabled
                   style="width: 50px"
                 >
-                  <a-input v-model="data[0].id" />
+                  <a-input
+                    :model-value="form[1].id"
+                    @update:modelValue="form[1].id = $event"
+                  />
                 </a-form-item>
 
                 <div style="display: flex"
                   ><a-form-item
-                    field="jobNumber"
                     label="标题"
                     style="width: 130px; margin-right: 30px"
                     required
                   >
-                    <a-input v-model="data[0].title" />
+                    <a-input v-model="form[1].title" />
                   </a-form-item>
-                  <a-form-item field="id" label="内容" required>
+                  <a-form-item label="内容" required>
                     <a-textarea
-                      v-model="data[0].content"
+                      v-model="form[1].content"
                       cols="50"
                       rows="8"
-                      max-length="200"
+                      :max-length="200"
                       show-word-limit
                       auto-size
                     ></a-textarea></a-form-item
                 ></div>
-                <a-form-item field="name" label="标注" required>
+                <a-form-item label="标注" required>
                   <a-textarea
-                    v-model="data[0].mark"
-                    max-length="65"
+                    v-model="form[1].line"
+                    :max-length="65"
                     show-word-limit
                     auto-size
                   ></a-textarea>
                 </a-form-item>
-                <a-form-item field="id" label="上传图标" required>
+                <a-form-item label="上传图标" required>
                   <div
                     ><a-upload
-                      action="/"
+                      action="https://106.14.32.178:8080/api/system/upload"
                       :file-list="file ? [file] : []"
                       :show-file-list="false"
                       @change="onChange"
                       @progress="onProgress"
+                      @success="onSuccess"
                     >
                       <template #upload-button>
                         <div
@@ -179,7 +178,7 @@
                             v-if="file && file.url"
                             class="arco-upload-list-picture custom-upload-avatar"
                           >
-                            <img :src="file.url" />
+                            <img :src="file.url" alt="上传的图片" />
                             <div class="arco-upload-list-picture-mask">
                               <IconEdit />
                             </div>
@@ -201,10 +200,7 @@
                           </div>
                           <div v-else class="arco-upload-picture-card">
                             <div class="arco-upload-picture-card-text">
-                              <IconPlus />
-                              <div style="margin-top: 10px; font-weight: 600"
-                                >Upload</div
-                              >
+                              <a-image :src="form[1].icon"></a-image>
                             </div>
                           </div>
                         </div>
