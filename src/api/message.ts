@@ -10,6 +10,7 @@ export interface MessageRecord {
   time: string;
   status: 0 | 1;
   messageType?: number;
+  tags: string;
 }
 export type MessageListType = MessageRecord[];
 
@@ -48,11 +49,21 @@ export function getTechnique() {
 export function postTechnique(data: any) {
   return axios.post<MessageListType>('/api/solution', data);
 }
+// 我们的服务api
+export function getServere() {
+  return axios.get<MessageListType>('/api/servere');
+}
+export function postServere(data: any) {
+  return axios.post<MessageListType>('/api/servere', data);
+}
+export function deleteServere(data: any) {
+  return axios.delete<MessageListType>(`/api/servere?id=${data}`);
+}
 
 //  文件上传api
-export function postSystem(data: any) {
-  return axios.post<MessageListType>('/api/system/upload', data);
-}
+// export function postSystem(data: any) {
+//   return axios.post<MessageListType>('/api/system/upload', data);
+// }
 export interface ChatRecord {
   id: number;
   username: string;

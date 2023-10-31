@@ -1,16 +1,18 @@
 <script setup lang="ts">
   import { IconEdit, IconPlus } from '@arco-design/web-vue/es/icon';
-  import { reactive, ref } from 'vue';
+  import { reactive, ref, onMounted } from 'vue';
+  import { deleteServere, getServere, postServere } from '@/api/message';
 
   const file = ref();
-
+  // 文件改变
   const onChange = (_: any, currentFile: any) => {
     file.value = {
       ...currentFile,
       // url: URL.createObjectURL(currentFile.file),
     };
   };
-  const onProgress = (currentFile) => {
+  // 文件展示
+  const onProgress = (currentFile: any) => {
     file.value = currentFile;
   };
 
@@ -31,19 +33,19 @@
     },
     {
       title: '标签',
-      dataIndex: 'mark',
+      dataIndex: 'tag',
     },
     {
       title: '栅格',
-      dataIndex: 'grid',
+      dataIndex: 'span',
     },
     {
-      title: '图标',
-      dataIndex: 'img',
+      title: '图片',
+      slotName: 'icon',
     },
     {
       title: '创建日期',
-      dataIndex: 'time',
+      dataIndex: 'createdTime',
       sortable: {
         sortDirections: ['ascend', 'descend'],
       },
@@ -53,165 +55,142 @@
       slotName: 'cell',
     },
   ];
-  const data = reactive([
+  const data: any = reactive([
     {
       key: 1,
       id: '咨询·培训',
-      children: [
-        {
-          key: 2,
-          id: 14,
-          title: '数字化转型咨询',
-          content: '挖掘场景、模型构建、数据打通、价值创造',
-          mark: '咨询·培训',
-          grid: '24',
-          img: 'img1',
-          time: '2023-09-18 14:36',
-        },
-        {
-          key: 3,
-          id: 15,
-          title: '数字化共创课程',
-          content:
-            '梳理需求、制定策略（明确创新目标和价值）、原型开发（量身定做可操作应用）、验证推广（现场部署与推广方案）',
-          mark: '咨询·培训',
-          grid: '24',
-          img: 'img2',
-          time: '2023-09-18 14:36',
-        },
-      ],
+      children: [],
     },
     {
       key: 4,
       id: 'AR/VR/MR眼镜方案',
-      children: [
-        {
-          key: 5,
-          id: 16,
-          title: '远程协作类',
-          content:
-            '人和人分离，专家在后台远程支持。使用者可与后台人员互动，后台人员以现场人员第一视角查看现场情况和接入的第三方数据',
-          mark: 'AR/VR/MR眼镜方案',
-          grid: '24',
-          img: 'img3',
-          time: '2023-09-18 14:36',
-        },
-        {
-          key: 6,
-          id: 17,
-          title: '作业流SOP类',
-          content:
-            '人和技术分离，知识固化在设备上，使用者按照眼镜中的图文要求，完成作业，如有违规，自动纠错',
-          mark: 'AR/VR/MR眼镜方案',
-          grid: '24',
-          img: 'img3',
-          time: '2023-09-18 14:36',
-        },
-        {
-          key: 7,
-          id: 18,
-          title: '数字孪生仿真类',
-          content:
-            '现实与虚拟镜像同步，AR是人与物理世界实时沟通的桥梁，是数字孪生的最佳运行环境',
-          mark: 'AR/VR/MR眼镜方案',
-          grid: '24',
-          img: 'img3',
-          time: '2023-09-18 14:36',
-        },
-      ],
+      children: [],
     },
     {
       key: 8,
 
       id: 'IT/OT/MR集成',
-      children: [
-        {
-          key: 9,
-          id: 19,
-          title: '电气火灾超前预警处置平台',
-          content:
-            '电气火灾数量在火灾占比第一，如何超前期预警火灾是重中之重。平台在短时间内根据有限的信息，针对不确定的需求，快速分派有限的资源，做出最优决策，对处置行为进行指导和监督，事后复盘流程再造，形成闭环管理',
-          mark: 'IT/OT/MR集成',
-          grid: '24',
-          img: 'img1',
-          time: '2023-09-18 14:36',
-        },
-        {
-          key: 10,
-          id: 20,
-          title: '合规作业预警处置平台',
-          content:
-            '合规监理在工业过程中是八大作业最重要的一个环节。我们采用合规预警处置平台联合机器人的方式协同进行监理，杜绝人为疏漏出现的隐患。应急平台集成事前预警，事中监督以及事后回溯的一套标准闭环管理流程',
-          mark: 'IT/OT/MR集成',
-          grid: '24',
-          img: 'img1',
-          time: '2023-09-18 14:36',
-        },
-      ],
+      children: [],
     },
     {
       key: 11,
 
       id: '数据中心智能化建设服务',
-      children: [
-        {
-          key: 12,
-          id: 21,
-          title: '配电系统',
-          content:
-            'UPS系统、列头配电柜、电气配电、发电机系统、0.4KV开关柜系统、变压器、10KV开关柜系统',
-          mark: '数据中心智能化建设服务',
-          grid: '24',
-          img: 'img1',
-          time: '2023-09-18 14:36',
-        },
-        {
-          key: 13,
-          id: 22,
-          title: '环境控制系统',
-          content: '精密空调、采暖及通⻛空调、循环⽔系统...',
-          mark: '数据中心智能化建设服务',
-          grid: '24',
-          img: 'img1',
-          time: '2023-09-18 14:36',
-        },
-        {
-          key: 14,
-          id: 23,
-          title: '弱电系统',
-          content: '智能化系统、综合布线、管线桥架...',
-          mark: '数据中心智能化建设服务',
-          grid: '24',
-          img: 'img1',
-          time: '2023-09-18 14:36',
-        },
-      ],
+      children: [],
     },
   ]);
   const visible = ref(false);
   const visible1 = ref(false);
 
-  const form = reactive({
-    name: '',
-    post: '',
-  });
-
+  const form: any = reactive([
+    {
+      content: '',
+      img: '',
+      span: '',
+      tag: '',
+      title: '',
+    },
+  ]);
+  // 编辑数据弹窗
   const handleClick = (record: any) => {
     visible.value = true;
     console.log(record);
+    form.push(record);
   };
+  // 新增数据弹窗
   const handleClick1 = () => {
     visible1.value = true;
+    form[0].tag = '';
+    form[0].content = '';
+    form[0].img = '';
+    form[0].span = '';
+    form[0].title = '';
   };
-
+  // 取消弹窗
   const handleCancel = () => {
     visible.value = false;
     visible1.value = false;
+    form.splice(1, 1);
+    // console.log(form);
   };
   const scroll = {
     x: 200,
     y: 350,
   };
+
+  const list = [
+    '咨询·培训',
+    'AR/VR/MR眼镜方案',
+    'IT/OT/MR集成',
+    '数据中心智能化建设服务',
+  ];
+  // 编辑功能提交数据
+  const handleBeforeOk = async (done: any) => {
+    const value = list.indexOf(form[1].tag) + 1;
+
+    console.log(list.indexOf(form[1].tag));
+    // delete form[0].createdTime;
+    form[1].tag = value;
+    await postServere(form[1]);
+    const serveList1 = await getServere();
+    for (let i = 0; i < serveList1.data.length; i += 1) {
+      data[i].id = serveList1.data[i].tags;
+      data[i].children = serveList1.data[i].content;
+    }
+    window.setTimeout(() => {
+      done();
+      form.splice(1, 1);
+      // prevent close
+      // done(false)
+    }, 1000);
+  };
+  // 新增功能提交数据
+  const handleBeforeOk1 = async (done: any) => {
+    // console.log(list.indexOf(form[0].tag));
+    // delete form[0].createdTime;
+    form[0].tag = list.indexOf(form[0].tag) + 1;
+    await postServere(form[0]);
+    const serveList1 = await getServere();
+    for (let i = 0; i < serveList1.data.length; i += 1) {
+      data[i].id = serveList1.data[i].tags;
+      data[i].children = serveList1.data[i].content;
+    }
+    window.setTimeout(() => {
+      done();
+      form.splice(1, 1);
+      // prevent close
+      // done(false)
+    }, 1000);
+  };
+  // 编辑功能上传文件成功
+  const onSuccess = (fileItem: any) => {
+    console.log(fileItem);
+    form[1].img = fileItem.response.data;
+  };
+  // 新增功能上传文件成功
+  const onSuccess1 = (fileItem: any) => {
+    // console.log(fileItem);
+    form[0].img = fileItem.response.data;
+  };
+  // 删除列表
+  const deleteList = async (record: any) => {
+    console.log(record.id);
+    await deleteServere(record.id);
+    const serveList1 = await getServere();
+    for (let i = 0; i < serveList1.data.length; i += 1) {
+      data[i].id = serveList1.data[i].tags;
+      data[i].children = serveList1.data[i].content;
+    }
+  };
+  //  获取展示数据
+  onMounted(async () => {
+    const serveList = await getServere();
+    console.log(serveList.data[0].tags);
+    for (let i = 0; i < serveList.data.length; i += 1) {
+      data[i].id = serveList.data[i].tags;
+      data[i].children = serveList.data[i].content;
+    }
+  });
 </script>
 
 <template>
@@ -235,64 +214,57 @@
         title="编辑数据"
         width="600px"
         @cancel="handleCancel"
+        @before-ok="handleBeforeOk1"
       >
-        <div>
+        <div v-if="form[0]">
           <a-form :model="form" layout="vertical">
-            <a-form-item
-              field="name"
-              label="id"
-              required
-              asterisk-position="end"
-              style="width: 50px"
-            >
-              <a-input />
-            </a-form-item>
-
             <div style="display: flex"
               ><a-form-item
-                field="jobNumber"
                 label="标题"
                 style="width: 130px; margin-right: 30px"
                 required
               >
-                <a-input />
+                <a-input v-model="form[0].title" />
               </a-form-item>
-              <a-form-item field="id" label="内容" required>
+              <a-form-item label="内容" required>
                 <a-textarea
+                  v-model="form[0].content"
                   cols="50"
                   rows="8"
-                  max-length="200"
+                  :max-length="200"
                   show-word-limit
                   auto-size
                 ></a-textarea></a-form-item
             ></div>
             <div style="display: flex"
               ><a-form-item
-                field="jobNumber"
                 label="栅格"
                 style="width: 530px; margin-right: 30px"
                 required
               >
-                <a-input />
+                <a-input v-model="form[0].span" />
               </a-form-item>
-              <a-form-item field="mark" label="标签">
-                <a-select default-value="Post1">
-                  <a-option value="post1">Post1</a-option>
-                  <a-option value="post2">Post2</a-option>
-                  <a-option value="post3">Post3</a-option>
-                  <a-option value="post4">Post4</a-option>
+              <a-form-item label="标签">
+                <a-select v-model="form[0].tag" default-value="咨询·培训">
+                  <a-option value="咨询·培训">咨询·培训</a-option>
+                  <a-option value="AR/VR/MR眼镜方案">AR/VR/MR眼镜方案</a-option>
+                  <a-option value="IT/OT/MR集成">IT/OT/MR集成</a-option>
+                  <a-option value="数据中心智能化建设服务"
+                    >数据中心智能化建设服务</a-option
+                  >
                 </a-select>
               </a-form-item></div
             >
 
-            <a-form-item field="id" label="上传图标" required>
+            <a-form-item label="上传图标" required>
               <div
                 ><a-upload
-                  action="/"
+                  action="https://106.14.32.178:8080/api/system/upload"
                   :file-list="file ? [file] : []"
                   :show-file-list="false"
                   @change="onChange"
                   @progress="onProgress"
+                  @success="onSuccess1"
                 >
                   <template #upload-button>
                     <div
@@ -306,7 +278,7 @@
                         v-if="file && file.url"
                         class="arco-upload-list-picture custom-upload-avatar"
                       >
-                        <img :src="file.url" />
+                        <img :src="file.url" alt="上传图片" />
                         <div class="arco-upload-list-picture-mask">
                           <IconEdit />
                         </div>
@@ -347,23 +319,26 @@
         <template #optional>
           <a-link href="#">视频链接</a-link>
         </template>
+        <template #icon="{ record }">
+          <a-image :src="record.img" height="15xp" width="40px"></a-image>
+        </template>
+
         <template #cell="{ record }">
           <a-button type="text" @click="handleClick(record)">编辑</a-button>
-          <a-popconfirm content="是否确认删除">
-            <a-tooltip content="删除此条"
-              ><a-button style="color: #ee0202" type="text"
-                >删除</a-button
-              ></a-tooltip
-            >
-          </a-popconfirm>
+          <a-tooltip content="删除此条">
+            <a-popconfirm content="是否确认删除" @ok="deleteList(record)">
+              <a-button style="color: #ee0202" type="text">删除</a-button>
+            </a-popconfirm>
+          </a-tooltip>
           <a-modal
             v-model:visible="visible"
             title="编辑数据"
             width="600px"
             @cancel="handleCancel"
+            @before-ok="handleBeforeOk"
           >
-            <div>
-              <a-form :model="record" layout="vertical">
+            <div v-if="form[1]">
+              <a-form :model="form" layout="vertical">
                 <a-form-item
                   label="id"
                   required
@@ -371,43 +346,45 @@
                   disabled
                   style="width: 50px"
                 >
-                  <a-input v-model="record.id" />
+                  <a-input v-model="form[1].id" />
                 </a-form-item>
 
                 <div style="display: flex"
                   ><a-form-item
-                    field="jobNumber"
                     label="标题"
                     style="width: 130px; margin-right: 30px"
                     required
                   >
-                    <a-input v-model="record.title" />
+                    <a-input v-model="form[1].title" />
                   </a-form-item>
                   <a-form-item label="内容" required>
                     <a-textarea
-                      v-model="record.content"
+                      v-model="form[1].content"
                       cols="50"
                       rows="8"
-                      max-length="200"
+                      :max-length="200"
                       show-word-limit
                       auto-size
                     ></a-textarea></a-form-item
                 ></div>
                 <div style="display: flex"
                   ><a-form-item
-                    field="jobNumber"
                     label="栅格"
                     style="width: 530px; margin-right: 30px"
                     required
                   >
-                    <a-input v-model="record.title" />
+                    <a-input v-model="form[1].span" />
                   </a-form-item>
                   <a-form-item field="mark" label="标签">
-                    <a-select default-value="Post1">
-                      <a-option value="post1">Post1</a-option>
-                      <a-option value="post2">Post2</a-option>
-                      <a-option value="post3">Post3</a-option>
-                      <a-option value="post4">Post4</a-option>
+                    <a-select v-model="form[1].tag" :default-value="record.tag">
+                      <a-option value="咨询·培训">咨询·培训</a-option>
+                      <a-option value="AR/VR/MR眼镜方案"
+                        >AR/VR/MR眼镜方案</a-option
+                      >
+                      <a-option value="IT/OT/MR集成">IT/OT/MR集成</a-option>
+                      <a-option value="数据中心智能化建设服务"
+                        >数据中心智能化建设服务</a-option
+                      >
                     </a-select>
                   </a-form-item></div
                 >
@@ -415,11 +392,12 @@
                 <a-form-item field="id" label="上传图标" required>
                   <div
                     ><a-upload
-                      action="/"
+                      action="https://106.14.32.178:8080/api/system/upload"
                       :file-list="file ? [file] : []"
                       :show-file-list="false"
                       @change="onChange"
                       @progress="onProgress"
+                      @success="onSuccess"
                     >
                       <template #upload-button>
                         <div
@@ -433,7 +411,7 @@
                             v-if="file && file.url"
                             class="arco-upload-list-picture custom-upload-avatar"
                           >
-                            <img :src="file.url" />
+                            <img :src="file.url" alt="上传图片" />
                             <div class="arco-upload-list-picture-mask">
                               <IconEdit />
                             </div>
@@ -455,10 +433,10 @@
                           </div>
                           <div v-else class="arco-upload-picture-card">
                             <div class="arco-upload-picture-card-text">
-                              <IconPlus />
-                              <div style="margin-top: 10px; font-weight: 600"
-                                >Upload</div
-                              >
+                              <a-image
+                                :src="form[1].img"
+                                width="200px"
+                              ></a-image>
                             </div>
                           </div>
                         </div>
