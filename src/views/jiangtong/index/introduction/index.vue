@@ -1,6 +1,6 @@
 <script setup lang="ts">
   import { reactive, ref, onMounted } from 'vue';
-  import { getAdvantages, getBrief, postBrief } from '@/api/message';
+  import { getBrief, postBrief } from '@/api/message';
 
   const show = ref(true);
   const index = ref(0);

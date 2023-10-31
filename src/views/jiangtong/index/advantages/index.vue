@@ -69,7 +69,7 @@
     // console.log(form);
   };
 
-  const handleCancel = (record: any) => {
+  const handleCancel = () => {
     visible.value = false;
     form.splice(1, 1);
   };
@@ -173,7 +173,7 @@
                             v-if="file && file.url"
                             class="arco-upload-list-picture custom-upload-avatar"
                           >
-                            <img :src="file.url" />
+                            <img :src="file.url" alt="上传图片" />
                             <div class="arco-upload-list-picture-mask">
                               <IconEdit />
                             </div>

@@ -121,55 +121,11 @@
                   auto-size
                 ></a-textarea>
               </a-form-item>
-              <a-form-item label="标签" required>
+              <a-form-item label="简介" required>
                 <a-textarea
                   v-model="data[0].label"
                   cols="25"
                   rows="7"
-                  max-length="65"
-                  show-word-limit
-                  auto-size
-                ></a-textarea>
-              </a-form-item>
-            </div>
-            <div style="display: flex">
-              <a-form-item label="背景" required>
-                <a-textarea
-                  v-model="data[0].background"
-                  cols="25"
-                  rows="6"
-                  max-length="65"
-                  show-word-limit
-                  auto-size
-                ></a-textarea>
-              </a-form-item>
-              <a-form-item label="痛点" required>
-                <a-textarea
-                  v-model="data[0].content"
-                  cols="25"
-                  rows="8"
-                  max-length="65"
-                  show-word-limit
-                  auto-size
-                ></a-textarea>
-              </a-form-item>
-            </div>
-            <div style="display: flex">
-              <a-form-item label="方案" required>
-                <a-textarea
-                  v-model="data[0].plan"
-                  cols="25"
-                  rows="6"
-                  max-length="65"
-                  show-word-limit
-                  auto-size
-                ></a-textarea>
-              </a-form-item>
-              <a-form-item label="益处" required>
-                <a-textarea
-                  v-model="data[0].mark"
-                  cols="25"
-                  rows="6"
                   max-length="65"
                   show-word-limit
                   auto-size
