@@ -150,6 +150,51 @@ const DASHBOARD: AppRouteRecordRaw = {
         },
       ],
     },
+    {
+      path: 'prescription',
+      name: 'Prescription',
+      component: () => import('@/views/jiangtong/prescription/index.vue'),
+      meta: {
+        locale: 'menu.jiangtong.prescription',
+        requiresAuth: true,
+        roles: ['*'],
+      },
+      children: [
+        {
+          path: 'tag',
+          name: 'Tag',
+          component: () =>
+            import('@/views/jiangtong/prescription/tag/index.vue'),
+          meta: {
+            locale: 'menu.jiangtong.prescription.tag',
+            requiresAuth: true,
+            roles: ['*'],
+          },
+        },
+        {
+          path: 'content',
+          name: 'Content',
+          component: () =>
+            import('@/views/jiangtong/prescription/content/index.vue'),
+          meta: {
+            locale: 'menu.jiangtong.prescription.content',
+            requiresAuth: true,
+            roles: ['*'],
+          },
+        },
+        {
+          path: 'changes',
+          name: 'Changes',
+          component: () =>
+            import('@/views/jiangtong/prescription/changes/index.vue'),
+          meta: {
+            locale: 'menu.jiangtong.prescription.changes',
+            requiresAuth: true,
+            roles: ['*'],
+          },
+        },
+      ],
+    },
   ],
 };
 

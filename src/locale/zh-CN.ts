@@ -25,6 +25,11 @@ import localeCertificate from '@/views/jiangtong/about/certificate/locale/zh-CN'
 import localeBusiness from '@/views/jiangtong/about/business/locale/zh-CN';
 import localeCustomer from '@/views/jiangtong/about/customer/locale/zh-CN';
 
+import localePrescription from '@/views/jiangtong/prescription/locale/zh-CN';
+import localeTag from '@/views/jiangtong/prescription/tag/locale/zh-CN';
+import localeContent from '@/views/jiangtong/prescription/content/locale/zh-CN';
+import localeChanges from '@/views/jiangtong/prescription/changes/locale/zh-CN';
+
 import localeSettings from './zh-CN/settings';
 
 export default {
@@ -70,4 +75,8 @@ export default {
   ...localeCertificate,
   ...localeBusiness,
   ...localeCustomer,
+  ...localePrescription,
+  ...localeTag,
+  ...localeContent,
+  ...localeChanges,
 };

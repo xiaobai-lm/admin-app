@@ -1,7 +1,10 @@
 <script setup lang="ts">
-  import { reactive, ref } from 'vue';
+  import { onMounted, reactive, ref } from 'vue';
+  import { getAdvantages, postAdvantages } from '@/api/message';
+  import { IconEdit } from '@arco-design/web-vue/es/icon';
 
   const show = ref(true);
+  const index = ref(0);
 
   const columns = [
     {
@@ -20,11 +23,11 @@
     },
     {
       title: '图标',
-      dataIndex: 'img',
+      slotName: 'icon',
     },
     {
       title: '创建日期',
-      dataIndex: 'time',
+      dataIndex: 'createTime',
       sortable: {
         sortDirections: ['ascend', 'descend'],
       },
@@ -34,86 +37,67 @@
       slotName: 'buttonBj',
     },
   ];
-  const data = reactive([
+  const data: any = reactive([]);
+  const visible = ref(false);
+  // const from: any = reactive([]);
+  const form = reactive([
     {
-      key: '1',
-      name:
-        '上海疆通科技有限公司是高新技术企业、科技型中小企业、上海市华东师范大学毕业生实习基地、上海市人工智能行业协会会员单位，拥有电子与智能化工程专业承包二级资质和ISO9001质量体系认证，公司拥有软硬件自主研发能力，一直致力于智能应急处置系统和数据中心的智能化建设。\n' +
-        '          主营业务是以物联传感为依托、以算法模型赋能、以MR图文呈现，实现IT/OT/MR互通的低代码系统集成方案，赋能企业顺利开展数字化转型。',
-      id: 1,
-      title: '专业：全流程最优数字化方案',
-      content:
-        '从咨询到落地，与西门子中国研究院、中大咨询等国内外顶尖咨询公司合作。',
-      img: 'img1',
-      time: '2023-09-18 14:36',
-      management: '',
-    },
-    {
-      key: '2',
-      name:
-        '上海疆通科技有限公司是高新技术企业、科技型中小企业、上海市华东师范大学毕业生实习基地、上海市人工智能行业协会会员单位，拥有电子与智能化工程专业承包二级资质和ISO9001质量体系认证，公司拥有软硬件自主研发能力，一直致力于智能应急处置系统和数据中心的智能化建设。\n' +
-        '          主营业务是以物联传感为依托、以算法模型赋能、以MR图文呈现，实现IT/OT/MR互通的低代码系统集成方案，赋能企业顺利开展数字化转型。',
-      id: 2,
-      title: '专业：全流程最优数字化方案',
-      content:
-        '从咨询到落地，与西门子中国研究院、中大咨询等国内外顶尖咨询公司合作。',
-      img: 'img1',
-      time: '2023-09-18 14:36',
-      management: '',
-    },
-    {
-      key: '3',
-      name:
-        '上海疆通科技有限公司是高新技术企业、科技型中小企业、上海市华东师范大学毕业生实习基地、上海市人工智能行业协会会员单位，拥有电子与智能化工程专业承包二级资质和ISO9001质量体系认证，公司拥有软硬件自主研发能力，一直致力于智能应急处置系统和数据中心的智能化建设。\n' +
-        '          主营业务是以物联传感为依托、以算法模型赋能、以MR图文呈现，实现IT/OT/MR互通的低代码系统集成方案，赋能企业顺利开展数字化转型。',
-      id: 3,
-      title: '专业：全流程最优数字化方案',
-      content:
-        '从咨询到落地，与西门子中国研究院、中大咨询等国内外顶尖咨询公司合作。',
-      img: 'img1',
-      time: '2023-09-18 14:36',
-      management: '',
-    },
-    {
-      key: '4',
-      name:
-        '上海疆通科技有限公司是高新技术企业、科技型中小企业、上海市华东师范大学毕业生实习基地、上海市人工智能行业协会会员单位，拥有电子与智能化工程专业承包二级资质和ISO9001质量体系认证，公司拥有软硬件自主研发能力，一直致力于智能应急处置系统和数据中心的智能化建设。\n' +
-        '          主营业务是以物联传感为依托、以算法模型赋能、以MR图文呈现，实现IT/OT/MR互通的低代码系统集成方案，赋能企业顺利开展数字化转型。',
-      id: 4,
-      title: '专业：全流程最优数字化方案',
-      content:
-        '从咨询到落地，与西门子中国研究院、中大咨询等国内外顶尖咨询公司合作。',
-      img: 'img1',
-      time: '2023-09-18 14:36',
-      management: '',
+      id: '',
+      title: '',
+      content: '',
+      icon: '',
+      time: '',
+      updatedTime: '',
     },
   ]);
-  const visible = ref(false);
-  const from: any = reactive([]);
-  const form = reactive({
-    name: '',
-    post: '',
-  });
 
+  const file: any = ref();
+
+  const onChange = (_: any, currentFile: any) => {
+    file.value = {
+      ...currentFile,
+      // url: URL.createObjectURL(currentFile.file),
+    };
+  };
+  const onProgress = (currentFile: any) => {
+    file.value = currentFile;
+  };
   const handleClick = (record: any) => {
     visible.value = true;
     // console.log(record);
-    from.push(record);
-    // console.log(from);
+    form.push(record);
+    // console.log(form);
   };
 
-  const handleCancel = () => {
+  const handleCancel = (record: any) => {
     visible.value = false;
-    console.log('1');
+    form.splice(1, 1);
   };
-  const handleBeforeOk = (done: any) => {
-    console.log(from);
+  const handleBeforeOk = async (done: any) => {
+    console.log('1', form);
+    // 上传数据
+    // console.log(form[1]);
+
+    await postAdvantages(form[1]);
+    const advantagesListx = await getAdvantages();
+    data.splice(0);
+    data.push(...advantagesListx.data);
     window.setTimeout(() => {
       done();
+      form.splice(1, 1);
       // prevent close
       // done(false)
-    }, 3000);
+    }, 1000);
   };
+
+  const onSuccess = (fileItem: any) => {
+    console.log(fileItem);
+    form[1].icon = fileItem.response.data;
+  };
+  onMounted(async () => {
+    const advantagesList = await getAdvantages();
+    data.push(...advantagesList.data);
+  });
 </script>
 
 <template>
@@ -123,6 +107,10 @@
   >
     <div style="margin: 20px 20px 0 20px">
       <a-table :columns="columns" :data="data">
+        <template #icon="{ record }">
+          <a-image :src="record.icon" height="50xp"></a-image>
+        </template>
+
         <template #buttonBj="{ record }">
           <a-button type="text" @click="handleClick(record)">编辑</a-button>
           <a-modal
@@ -132,41 +120,87 @@
             @cancel="handleCancel"
             @before-ok="handleBeforeOk"
           >
-            <div>
-              <a-form :model="from" layout="vertical">
+            <div v-if="form[1]">
+              <a-form :model="form" layout="vertical">
                 <a-form-item
-                  field="name"
                   label="id"
                   required
                   asterisk-position="end"
                   disabled
                   style="width: 50px"
                 >
-                  <a-input v-model="from[0].id" />
+                  <a-input v-model="form[1].id" />
                 </a-form-item>
 
                 <div style="display: flex"
                   ><a-form-item
-                    field="jobNumber"
                     label="标题"
                     style="width: 130px; margin-right: 30px"
                     required
                   >
-                    <a-input v-model="from[0].title" />
+                    <a-input v-model="form[1].title" />
                   </a-form-item>
-                  <a-form-item field="id" label="内容" required>
+                  <a-form-item label="内容" required>
                     <a-textarea
-                      v-model="data[0].content"
+                      v-model="form[1].content"
                       cols="50"
                       rows="8"
-                      max-length="200"
+                      :max-length="200"
                       show-word-limit
                       auto-size
                     ></a-textarea></a-form-item
                 ></div>
-                <a-form-item field="id" label="上传图标" required>
+                <a-form-item label="上传图标" required>
                   <div
-                    ><div class="video"></div>
+                    ><a-upload
+                      action="https://106.14.32.178:8080/api/system/upload"
+                      name="file"
+                      :file-list="file ? [file] : []"
+                      :show-file-list="false"
+                      @change="onChange"
+                      @progress="onProgress"
+                      @success="onSuccess"
+                    >
+                      <template #upload-button>
+                        <div
+                          :class="`arco-upload-list-item${
+                            file && file.status === 'error'
+                              ? ' arco-upload-list-item-error'
+                              : ''
+                          }`"
+                        >
+                          <div
+                            v-if="file && file.url"
+                            class="arco-upload-list-picture custom-upload-avatar"
+                          >
+                            <img :src="file.url" />
+                            <div class="arco-upload-list-picture-mask">
+                              <IconEdit />
+                            </div>
+                            <a-progress
+                              v-if="
+                                file.status === 'uploading' &&
+                                file.percent < 100
+                              "
+                              :percent="file.percent"
+                              type="circle"
+                              size="mini"
+                              :style="{
+                                position: 'absolute',
+                                left: '50%',
+                                top: '50%',
+                                transform: 'translateX(-50%) translateY(-50%)',
+                              }"
+                            />
+                          </div>
+                          <div v-else class="arco-upload-picture-card">
+                            <div class="arco-upload-picture-card-text">
+                              <a-image :src="form[1].icon"></a-image>
+                            </div>
+                          </div>
+                        </div>
+                      </template>
+                    </a-upload>
                     <div style="">图片宽高限制为：100×100</div></div
                   >
                 </a-form-item>

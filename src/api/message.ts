@@ -27,10 +27,24 @@ export function setMessageStatus(data: MessageStatus) {
 export function getText() {
   return axios.get<MessageListType>('/api/news');
 }
+//  官网简介api
 export function getBrief() {
   return axios.get<MessageListType>('/api/brief');
 }
-
+export function postBrief(data: any) {
+  return axios.post<MessageListType>('/api/brief', data);
+}
+// 核心优势api
+export function getAdvantages() {
+  return axios.get<MessageListType>('/api/advantage');
+}
+export function postAdvantages(data: any) {
+  return axios.post<MessageListType>('/api/advantage', data);
+}
+//  文件上传api
+export function postSystem(data: any) {
+  return axios.post<MessageListType>('/api/system/upload', data);
+}
 export interface ChatRecord {
   id: number;
   username: string;
