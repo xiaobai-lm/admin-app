@@ -1,6 +1,17 @@
 <script setup lang="ts">
   import { reactive, ref } from 'vue';
 
+  const file: any = ref();
+
+  const onChange = (_: any, currentFile: any) => {
+    file.value = {
+      ...currentFile,
+      // url: URL.createObjectURL(currentFile.file),
+    };
+  };
+  const onProgress = (currentFile: any) => {
+    file.value = currentFile;
+  };
   const columns = [
     {
       title: '#',
