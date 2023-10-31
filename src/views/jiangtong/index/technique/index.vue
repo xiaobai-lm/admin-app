@@ -87,9 +87,6 @@
     console.log(fileItem);
     form[1].icon = fileItem.response.data;
   };
-  // computed(() => {
-  //   const id = data[0].id;
-  // });
   onMounted(async () => {
     const techniqueList = await getTechnique();
     data.push(...techniqueList.data);

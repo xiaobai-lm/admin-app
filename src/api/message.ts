@@ -60,6 +60,16 @@ export function deleteServere(data: any) {
   return axios.delete<MessageListType>(`/api/servere?id=${data}`);
 }
 
+//  项目案例api
+export function getCases() {
+  return axios.get<MessageListType>('/api/cases');
+}
+export function postCases(data: any) {
+  return axios.post<MessageListType>('/api/cases', data);
+}
+export function deleteCases(data: any) {
+  return axios.delete<MessageListType>(`/api/cases?id=${data}`);
+}
 //  文件上传api
 // export function postSystem(data: any) {
 //   return axios.post<MessageListType>('/api/system/upload', data);
