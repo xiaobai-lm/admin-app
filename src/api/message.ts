@@ -70,6 +70,10 @@ export function postCases(data: any) {
 export function deleteCases(data: any) {
   return axios.delete<MessageListType>(`/api/cases?id=${data}`);
 }
+// 新闻资讯
+export function getNews() {
+  return axios.get<MessageListType>('/api/news');
+}
 //  文件上传api
 // export function postSystem(data: any) {
 //   return axios.post<MessageListType>('/api/system/upload', data);

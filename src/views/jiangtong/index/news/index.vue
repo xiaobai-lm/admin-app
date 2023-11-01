@@ -1,16 +1,16 @@
 <script setup lang="ts">
-  import { reactive, ref } from 'vue';
+  import { reactive, ref, onMounted } from 'vue';
   import { IconEdit, IconPlus } from '@arco-design/web-vue/es/icon';
-  import { getText } from '@/api/message';
+  import { getNews } from '@/api/message';
 
   const file = ref();
-  const onChange = (_, currentFile) => {
+  const onChange = (_: any, currentFile: any) => {
     file.value = {
       ...currentFile,
       // url: URL.createObjectURL(currentFile.file),
     };
   };
-  const onProgress = (currentFile) => {
+  const onProgress = (currentFile: any) => {
     file.value = currentFile;
   };
 
@@ -23,11 +23,11 @@
     },
     {
       title: '标签',
-      dataIndex: 'label',
+      dataIndex: 'tag',
     },
     {
       title: '图片',
-      dataIndex: 'img',
+      slotName: 'img',
     },
     {
       title: '链接',
@@ -35,12 +35,12 @@
     },
     {
       title: '发布时间',
-      dataIndex: 'releaseTime',
+      dataIndex: 'time',
     },
 
     {
       title: '创建日期',
-      dataIndex: 'time',
+      dataIndex: 'createdTime',
       sortable: {
         sortDirections: ['ascend', 'descend'],
       },
@@ -50,36 +50,7 @@
       slotName: 'buttonBj',
     },
   ];
-  const data = reactive([
-    {
-      key: 1,
-      id: '1',
-      title: '疆通科技数字孪生展陈成果亮相2023世界人工智能大会。',
-      img: 'img',
-      label: '1',
-      time: '2023-09-18 14:36',
-      releaseTime: '2023-07-09',
-      hrefLink: '#',
-    },
-    {
-      key: 2,
-      id: '2',
-      title: '疆通科技数字孪生展陈成果亮相2023世界人工智能大会。',
-      img: 'img1',
-      label: '1',
-      time: '2023-09-18 14:36',
-      releaseTime: '2023-07-09',
-    },
-    {
-      key: 3,
-      id: '3',
-      title: '疆通科技数字孪生展陈成果亮相2023世界人工智能大会。',
-      img: 'img1',
-      label: '1',
-      time: '2023-09-18 14:36',
-      releaseTime: '2023-07-09',
-    },
-  ]);
+  const data: any = reactive([]);
   const visible = ref(false);
   const visible1 = ref(false);
 
@@ -90,8 +61,6 @@
 
   const handleClick = async () => {
     visible.value = true;
-    const a = await getText();
-    console.log(a);
   };
   const handleClick1 = () => {
     visible1.value = true;
@@ -105,6 +74,10 @@
     x: 200,
     y: 350,
   };
+  onMounted(async () => {
+    const newsList = await getNews();
+    data.push(...newsList.data);
+  });
 </script>
 
 <template>
@@ -211,8 +184,11 @@
         新增
       </a-button>
       <a-table :columns="columns" :data="data" :scroll="scroll">
-        <template #link>
-          <a-link href="#">文章链接</a-link>
+        <template #link="{ record }">
+          <a-link :href="record.link">文章链接</a-link>
+        </template>
+        <template #img="{ record }">
+          <a-image :src="record.image" height="60px"></a-image>
         </template>
         <template #buttonBj>
           <a-button type="text" @click="handleClick">编辑</a-button>
