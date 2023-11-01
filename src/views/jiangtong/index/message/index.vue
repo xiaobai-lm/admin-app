@@ -1,5 +1,6 @@
 <script setup lang="ts">
-  import { reactive, ref } from 'vue';
+  import { reactive, ref, onMounted } from 'vue';
+  import { getMessage, deleteMessage } from '@/api/message';
 
   const show = ref(true);
 
@@ -20,7 +21,7 @@
     },
     {
       title: '创建日期',
-      dataIndex: 'time',
+      dataIndex: 'createdTime',
       sortable: {
         sortDirections: ['ascend', 'descend'],
       },
@@ -30,16 +31,7 @@
       slotName: 'buttonBj',
     },
   ];
-  const data = reactive([
-    {
-      key: '1',
-      name: '李广益',
-      phone: '17625244142',
-      content: '1234',
-
-      time: '2023-09-18 14:36',
-    },
-  ]);
+  const data: any = reactive([]);
   const visible = ref(false);
   const form = reactive({
     name: '',
@@ -53,6 +45,16 @@
   const handleCancel = () => {
     visible.value = false;
   };
+  const deleteList = async (record: any) => {
+    await deleteMessage(record.id);
+    const message = await getMessage();
+    data.splice(0);
+    data.push(...message.data);
+  };
+  onMounted(async () => {
+    const message = await getMessage();
+    data.push(...message.data);
+  });
 </script>
 
 <template>
@@ -62,8 +64,8 @@
   >
     <div style="margin: 20px 20px 0 20px"
       ><a-table :columns="columns" :data="data">
-        <template #buttonBj>
-          <a-popconfirm content="是否确认删除">
+        <template #buttonBj="{ record }">
+          <a-popconfirm content="是否确认删除" @ok="deleteList(record)">
             <a-tooltip content="删除此条"
               ><a-button style="color: #ee0202" type="text"
                 >删除</a-button

@@ -70,7 +70,7 @@ export function postCases(data: any) {
 export function deleteCases(data: any) {
   return axios.delete<MessageListType>(`/api/cases?id=${data}`);
 }
-// 新闻资讯
+// 新闻资讯api
 export function getNews() {
   return axios.get<MessageListType>('/api/news');
 }
@@ -79,6 +79,13 @@ export function postNews(data: any) {
 }
 export function deleteNews(data: any) {
   return axios.delete<MessageListType>(`/api/news?id=${data}`);
+}
+// 留言列表api
+export function getMessage() {
+  return axios.get<MessageListType>('/api/message');
+}
+export function deleteMessage(data: any) {
+  return axios.delete<MessageListType>(`/api/message?id=${data}`);
 }
 //  文件上传api
 // export function postSystem(data: any) {
