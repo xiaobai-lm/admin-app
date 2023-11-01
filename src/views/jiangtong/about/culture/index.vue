@@ -1,10 +1,11 @@
 <script setup lang="ts">
-  import { reactive, ref } from 'vue';
+  import { reactive, ref, onMounted } from 'vue';
+  import { getCulture, postCulture, deleteCulture } from '@/api/message';
 
   const columns = [
     {
       title: '#',
-      dataIndex: 'label',
+      dataIndex: 'id',
     },
     {
       title: '标题',
@@ -12,7 +13,7 @@
     },
     {
       title: '英文标题',
-      dataIndex: 'enTitle',
+      dataIndex: 'ent',
     },
     {
       ellipsis: true,
@@ -23,7 +24,7 @@
 
     {
       title: '创建日期',
-      dataIndex: 'time',
+      dataIndex: 'createdTime',
       sortable: {
         sortDirections: ['ascend', 'descend'],
       },
@@ -33,64 +34,66 @@
       slotName: 'buttonBj',
     },
   ];
-  const data = reactive([
-    {
-      key: 1,
-      label: '4',
-      title: '使命',
-      content: '探索智慧场景，提升人类幸福',
-      enTitle: 'Mission',
-      time: '2023-09-18 14:36',
-    },
-    {
-      key: 2,
-      label: '5',
-      title: '愿景',
-      content: '成为合规、高效、智慧的标杆',
-      enTitle: 'Vision',
-      time: '2023-09-18 14:36',
-    },
-    {
-      key: 3,
-      label: '6',
-      title: '价值观',
-      content: '跨界创新、协作共赢、做事靠谱',
-      enTitle: 'Values',
-      time: '2023-09-18 14:36',
-    },
-  ]);
+  const data: any = reactive([]);
   const visible = ref(false);
   const visible1 = ref(false);
 
-  const from: any = reactive({
-    title: '1',
-    enTitle: '1',
-    content: '1',
-  });
-  const handleClick = (recode: any) => {
+  const from: any = reactive([
+    {
+      title: '',
+      ent: '',
+      content: '',
+    },
+  ]);
+  const handleClick = (record: any) => {
     visible.value = true;
-    console.log(recode);
-    from.title = recode.record.title;
-    from.enTitle = recode.record.enTitle;
-    from.content = recode.record.content;
+    console.log(record);
+    from.push(record);
+    console.log(from);
   };
   const handleClick1 = () => {
     visible1.value = true;
+    from[0].title = '';
+    from[0].ent = '';
+    from[0].content = '';
   };
   const handleCancel = () => {
     visible.value = false;
     visible1.value = false;
+    from.splice(1, 1);
+  };
+  const handleOK = async () => {
+    await postCulture(from[1]);
+    const x = await getCulture();
+    data.splice(0);
+    data.push(...x.data);
+  };
+  const handleOK1 = async () => {
+    await postCulture(from[0]);
+    const x = await getCulture();
+    data.splice(0);
+    data.push(...x.data);
+  };
+  const deleteList = async (record: any) => {
+    await deleteCulture(record.id);
+    const x = await getCulture();
+    data.splice(0);
+    data.push(...x.data);
   };
   const scroll = {
     x: 200,
     y: 350,
   };
+  onMounted(async () => {
+    const cultureList = await getCulture();
+    data.push(...cultureList.data);
+  });
 </script>
 
 <template>
   <div
     class="bg-white mxy rounded pxy flex flex-col items"
-    style="height: 550px; border-radius: 10px"
+    style="height: 650px; border-radius: 10px"
   >
     <div style="margin: 20px 0 0 20px">
       <a-button
@@ -105,20 +108,27 @@
       </a-button>
       <a-modal
         v-model:visible="visible1"
-        title="编辑数据"
+        title="新增数据"
         width="600px"
         :model="from"
         @cancel="handleCancel"
+        @ok="handleOK1"
       >
         <div style="display: flex">
           <a-form-item :model="from" label="标题" required>
-            <a-textarea cols="25" rows="6" auto-size></a-textarea>
+            <a-textarea
+              v-model="from[0].title"
+              cols="25"
+              rows="6"
+              auto-size
+            ></a-textarea>
           </a-form-item>
           <a-form-item label="英文标题" required>
             <a-textarea
+              v-model="from[0].ent"
               cols="25"
               rows="7"
-              max-length="65"
+              :max-length="65"
               auto-size
               show-word-limit
             ></a-textarea>
@@ -128,9 +138,10 @@
         <div style="display: flex">
           <a-form-item label="内容" required>
             <a-textarea
+              v-model="from[0].content"
               cols="25"
               rows="6"
-              max-length="65"
+              :max-length="65"
               show-word-limit
               auto-size
             ></a-textarea>
@@ -138,54 +149,58 @@
         </div>
       </a-modal>
       <a-table :columns="columns" :data="data" :scroll="scroll">
-        <template #buttonBj="recode">
-          <a-button type="text" @click="handleClick(recode)">编辑</a-button>
-          <a-popconfirm content="是否确认删除">
+        <template #buttonBj="{ record }">
+          <a-button type="text" @click="handleClick(record)">编辑</a-button>
+          <a-popconfirm content="是否确认删除" @ok="deleteList(record)">
             <a-tooltip content="删除此条"
               ><a-button style="color: #ee0202" type="text"
                 >删除</a-button
               ></a-tooltip
             >
           </a-popconfirm>
+
           <a-modal
             v-model:visible="visible"
             title="编辑数据"
             width="600px"
             :model="from"
             @cancel="handleCancel"
+            @ok="handleOK"
           >
-            <div style="display: flex">
-              <a-form-item :model="from" label="标题" required>
-                <a-textarea
-                  v-model="from.title"
-                  cols="25"
-                  rows="6"
-                  auto-size
-                ></a-textarea>
-              </a-form-item>
-              <a-form-item label="英文标题" required>
-                <a-textarea
-                  v-model="from.enTitle"
-                  cols="25"
-                  rows="7"
-                  max-length="65"
-                  show-word-limit
-                  auto-size
-                ></a-textarea>
-              </a-form-item>
-            </div>
+            <div v-if="from[1]">
+              <div style="display: flex">
+                <a-form-item label="标题" required>
+                  <a-textarea
+                    v-model="from[1].title"
+                    cols="25"
+                    rows="6"
+                    auto-size
+                  ></a-textarea>
+                </a-form-item>
+                <a-form-item label="英文标题" required>
+                  <a-textarea
+                    v-model="from[1].ent"
+                    cols="25"
+                    rows="7"
+                    :max-length="65"
+                    show-word-limit
+                    auto-size
+                  ></a-textarea>
+                </a-form-item>
+              </div>
 
-            <div style="display: flex">
-              <a-form-item label="内容" required>
-                <a-textarea
-                  v-model="from.content"
-                  cols="25"
-                  rows="6"
-                  max-length="65"
-                  show-word-limit
-                  auto-size
-                ></a-textarea>
-              </a-form-item>
+              <div style="display: flex">
+                <a-form-item label="内容" required>
+                  <a-textarea
+                    v-model="from[1].content"
+                    cols="25"
+                    rows="6"
+                    :max-length="65"
+                    show-word-limit
+                    auto-size
+                  ></a-textarea>
+                </a-form-item>
+              </div>
             </div>
           </a-modal>
         </template>
