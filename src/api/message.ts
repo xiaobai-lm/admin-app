@@ -119,6 +119,16 @@ export function postBusiness(data: any) {
 export function deleteBusiness(data: any) {
   return axios.delete<MessageListType>(`/api/business?id=${data}`);
 }
+// 我们的客户api
+export function getCustomer() {
+  return axios.get<MessageListType>('/api/customer');
+}
+export function postCustomer(data: any) {
+  return axios.post<MessageListType>('/api/customer', data);
+}
+export function deleteCustomer(data: any) {
+  return axios.delete<MessageListType>(`/api/customer?id=${data}`);
+}
 //  文件上传api
 // export function postSystem(data: any) {
 //   return axios.post<MessageListType>('/api/system/upload', data);
