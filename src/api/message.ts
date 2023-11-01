@@ -129,6 +129,37 @@ export function postCustomer(data: any) {
 export function deleteCustomer(data: any) {
   return axios.delete<MessageListType>(`/api/customer?id=${data}`);
 }
+//      解决方案
+// 方案列表
+export function getTag() {
+  return axios.get<MessageListType>('/api/prescription/title');
+}
+export function postTag(data: any) {
+  return axios.post<MessageListType>('/api/prescription/title', data);
+}
+export function deleteTag(data: any) {
+  return axios.delete<MessageListType>(`/api/prescription/title?id=${data}`);
+}
+// 内容列表
+export function getContent() {
+  return axios.get<MessageListType>('/api/content');
+}
+export function postContent(data: any) {
+  return axios.post<MessageListType>('/api/content', data);
+}
+export function deleteContent(data: any) {
+  return axios.delete<MessageListType>(`/api/content?id=${data}`);
+}
+// 内容细节api
+export function getChanges() {
+  return axios.get<MessageListType>('/api/changes');
+}
+export function postChanges(data: any) {
+  return axios.post<MessageListType>('/api/changes', data);
+}
+export function deleteChanges(data: any) {
+  return axios.delete<MessageListType>(`/api/changes?id=${data}`);
+}
 //  文件上传api
 // export function postSystem(data: any) {
 //   return axios.post<MessageListType>('/api/system/upload', data);

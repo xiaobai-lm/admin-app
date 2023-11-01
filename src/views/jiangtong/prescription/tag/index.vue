@@ -1,20 +1,21 @@
 <script setup lang="ts">
-  import { reactive, ref } from 'vue';
+  import { reactive, ref, onMounted } from 'vue';
+  import { getTag, deleteTag, postTag } from '@/api/message';
 
   const columns = [
     {
       title: '#',
-      dataIndex: 'label',
+      dataIndex: 'id',
     },
     {
       title: '标题',
-      dataIndex: 'title',
+      dataIndex: 'tab',
     },
     {
       ellipsis: true,
       tooltip: true,
       title: '简介',
-      dataIndex: 'background',
+      dataIndex: 'synopsis',
     },
 
     {
@@ -22,38 +23,58 @@
       slotName: 'buttonBj',
     },
   ];
-  const data = reactive([
-    {
-      key: 1,
-      id: '1',
-      title: '111',
-      background: '222',
-      label: '1',
-    },
-  ]);
+  const data: any = reactive([]);
   const visible = ref(false);
   const visible1 = ref(false);
 
-  const form = reactive({
-    name: '',
-    post: '',
-  });
+  const form: any = reactive([
+    {
+      tab: '',
+      synopsis: '',
+    },
+  ]);
 
-  const handleClick = () => {
+  const handleClick = (record: any) => {
     visible.value = true;
+    form.push(record);
   };
   const handleClick1 = () => {
     visible1.value = true;
+    form[0].tab = '';
+    form[0].synopsis = '';
   };
 
   const handleCancel = () => {
     visible.value = false;
     visible1.value = false;
+    form.splice(1, 1);
+  };
+  const handleOk = async () => {
+    await postTag(form[1]);
+    const tagList = await getTag();
+    data.splice(0);
+    data.push(...tagList.data);
+  };
+  const handleOk1 = async () => {
+    await postTag(form[0]);
+    const tagList = await getTag();
+    data.splice(0);
+    data.push(...tagList.data);
+  };
+  const deleteList = async (record: any) => {
+    await deleteTag(record.id);
+    const tagList = await getTag();
+    data.splice(0);
+    data.push(...tagList.data);
   };
   const scroll = {
     x: 200,
     y: 350,
   };
+  onMounted(async () => {
+    const tagList = await getTag();
+    data.push(...tagList.data);
+  });
 </script>
 
 <template>
@@ -72,20 +93,27 @@
           title="编辑数据"
           width="600px"
           @cancel="handleCancel"
+          @ok="handleOk1"
         >
           <div style="display: flex">
             <a-form-item label="标题" required>
-              <a-textarea cols="25" rows="6" auto-size></a-textarea>
+              <a-textarea
+                v-model="form[0].tab"
+                cols="25"
+                rows="6"
+                auto-size
+              ></a-textarea>
             </a-form-item>
           </div>
           <div style="display: flex">
             <a-form-item label="简介" required>
               <a-textarea
+                v-model="form[0].synopsis"
                 cols="25"
                 rows="6"
-                max-length="65"
-                show-word-limit
+                :max-length="65"
                 auto-size
+                show-word-limit
               ></a-textarea>
             </a-form-item>
           </div>
@@ -97,42 +125,45 @@
         新增
       </a-button>
       <a-table :columns="columns" :data="data" :scroll="scroll">
-        <template #buttonBj>
-          <a-button type="text" @click="handleClick">编辑</a-button>
-          <a-popconfirm content="是否确认删除">
+        <template #buttonBj="{ record }">
+          <a-button type="text" @click="handleClick(record)">编辑</a-button>
+          <a-popconfirm content="是否确认删除" @ok="deleteList(record)">
             <a-tooltip content="删除此条"
               ><a-button style="color: #ee0202" type="text"
                 >删除</a-button
               ></a-tooltip
             >
           </a-popconfirm>
-          <a-modal
-            v-model:visible="visible"
-            title="编辑数据"
-            width="600px"
-            @cancel="handleCancel"
-          >
-            <div style="display: flex">
-              <a-form-item label="标题" required>
-                <a-textarea
-                  v-model="data[0].title"
-                  cols="25"
-                  rows="6"
-                  auto-size
-                ></a-textarea>
-              </a-form-item>
-              <a-form-item label="简介" required>
-                <a-textarea
-                  v-model="data[0].label"
-                  cols="25"
-                  rows="7"
-                  max-length="65"
-                  show-word-limit
-                  auto-size
-                ></a-textarea>
-              </a-form-item>
-            </div>
-          </a-modal>
+          <div v-if="form[1]">
+            <a-modal
+              v-model:visible="visible"
+              title="编辑数据"
+              width="600px"
+              @cancel="handleCancel"
+              @ok="handleOk"
+            >
+              <div style="display: flex">
+                <a-form-item label="标题" required>
+                  <a-textarea
+                    v-model="form[1].tab"
+                    cols="25"
+                    rows="6"
+                    auto-size
+                  ></a-textarea>
+                </a-form-item>
+                <a-form-item label="简介" required>
+                  <a-textarea
+                    v-model="form[1].synopsis"
+                    cols="25"
+                    rows="7"
+                    :max-length="65"
+                    show-word-limit
+                    auto-size
+                  ></a-textarea>
+                </a-form-item>
+              </div>
+            </a-modal>
+          </div>
         </template>
       </a-table>
     </div>
