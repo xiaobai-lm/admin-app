@@ -28,6 +28,7 @@ export function setMessageStatus(data: MessageStatus) {
 export function getText() {
   return axios.get<MessageListType>('/api/news');
 }
+// 首页api
 //  官网简介api
 export function getBrief() {
   return axios.get<MessageListType>('/api/brief');
@@ -86,6 +87,37 @@ export function getMessage() {
 }
 export function deleteMessage(data: any) {
   return axios.delete<MessageListType>(`/api/message?id=${data}`);
+}
+//      关于我们api
+// 企业文化api
+export function getCulture() {
+  return axios.get<MessageListType>('/api/culture');
+}
+export function postCulture(data: any) {
+  return axios.post<MessageListType>('/api/culture', data);
+}
+export function deleteCulture(data: any) {
+  return axios.delete<MessageListType>(`/api/culture?id=${data}`);
+}
+//  企业证书api
+export function getCertificate() {
+  return axios.get<MessageListType>('/api/certificate');
+}
+export function postCertificate(data: any) {
+  return axios.post<MessageListType>('/api/certificate', data);
+}
+export function deleteCertificate(data: any) {
+  return axios.delete<MessageListType>(`/api/certificate?id=${data}`);
+}
+// 业务分类
+export function getBusiness() {
+  return axios.get<MessageListType>('/api/business');
+}
+export function postBusiness(data: any) {
+  return axios.post<MessageListType>('/api/business', data);
+}
+export function deleteBusiness(data: any) {
+  return axios.delete<MessageListType>(`/api/business?id=${data}`);
 }
 //  文件上传api
 // export function postSystem(data: any) {
