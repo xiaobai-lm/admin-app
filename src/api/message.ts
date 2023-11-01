@@ -74,6 +74,12 @@ export function deleteCases(data: any) {
 export function getNews() {
   return axios.get<MessageListType>('/api/news');
 }
+export function postNews(data: any) {
+  return axios.post<MessageListType>('/api/news', data);
+}
+export function deleteNews(data: any) {
+  return axios.delete<MessageListType>(`/api/news?id=${data}`);
+}
 //  文件上传api
 // export function postSystem(data: any) {
 //   return axios.post<MessageListType>('/api/system/upload', data);
