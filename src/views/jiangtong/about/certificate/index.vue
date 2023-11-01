@@ -1,5 +1,10 @@
 <script setup lang="ts">
-  import { reactive, ref } from 'vue';
+  import { reactive, ref, onMounted } from 'vue';
+  import {
+    getCertificate,
+    postCertificate,
+    deleteCertificate,
+  } from '@/api/message';
 
   const file: any = ref();
 
@@ -15,26 +20,27 @@
   const columns = [
     {
       title: '#',
-      dataIndex: 'label',
+      dataIndex: 'id',
+      width: 100,
     },
     {
       title: '标题',
       dataIndex: 'title',
+      width: 400,
     },
     {
       title: '权重',
-      dataIndex: 'Weights',
+      dataIndex: 'order',
+      width: 100,
     },
     {
-      ellipsis: true,
-      tooltip: true,
       title: '图片',
-      dataIndex: 'img',
+      slotName: 'img',
     },
 
     {
       title: '创建日期',
-      dataIndex: 'time',
+      dataIndex: 'createdTime',
       sortable: {
         sortDirections: ['ascend', 'descend'],
       },
@@ -44,46 +50,21 @@
       slotName: 'buttonBj',
     },
   ];
-  const data = reactive([
-    {
-      key: 1,
-      label: '8',
-      title: '高新技术企业',
-      content: '探索智慧场景，提升人类幸福',
-      Weights: '1',
-      time: '2023-09-18 14:36',
-    },
-    {
-      key: 2,
-      label: '5',
-      title: '愿景',
-      content: '成为合规、高效、智慧的标杆',
-      enTitle: 'Vision',
-      time: '2023-09-18 14:36',
-    },
-    {
-      key: 3,
-      label: '6',
-      title: '价值观',
-      content: '跨界创新、协作共赢、做事靠谱',
-      enTitle: 'Values',
-      time: '2023-09-18 14:36',
-    },
-  ]);
+  const data: any = reactive([]);
   const visible = ref(false);
   const visible1 = ref(false);
 
-  const from: any = reactive({
-    title: '1',
-    Weights: '1',
-    content: '1',
-  });
+  const from: any = reactive([
+    {
+      title: '',
+      order: '',
+      img: '',
+    },
+  ]);
   const handleClick = (recode: any) => {
     visible.value = true;
     console.log(recode);
-    from.title = recode.record.title;
-    from.Weights = recode.record.Weights;
-    from.content = recode.record.content;
+    from.push(recode);
   };
   const handleClick1 = () => {
     visible1.value = true;
@@ -91,17 +72,54 @@
   const handleCancel = () => {
     visible.value = false;
     visible1.value = false;
+    from.splice(1, 1);
+  };
+  // 编辑功能图片上传
+  const onSuccess = (fileItem: any) => {
+    console.log(fileItem);
+    from[1].img = fileItem.response.data;
+  };
+  // 新增功能图片上传
+
+  const onSuccess1 = (fileItem: any) => {
+    console.log(fileItem);
+    from[0].img = fileItem.response.data;
+  };
+  // 编辑功能数据提交
+  const handleOk = async () => {
+    await postCertificate(from[1]);
+    const cteList = await getCertificate();
+    data.splice(0);
+    data.push(...cteList.data);
+  };
+  // 新增功能数据提交
+  const handleOk1 = async () => {
+    await postCertificate(from[0]);
+    const cteList = await getCertificate();
+    data.splice(0);
+    data.push(...cteList.data);
+  };
+  // 删除功能数据提交
+  const deleteList = async (record: any) => {
+    await deleteCertificate(record.id);
+    const cteList = await getCertificate();
+    data.splice(0);
+    data.push(...cteList.data);
   };
   const scroll = {
     x: 200,
-    y: 350,
+    y: 450,
   };
+  onMounted(async () => {
+    const cteList = await getCertificate();
+    data.push(...cteList.data);
+  });
 </script>
 
 <template>
   <div
     class="bg-white mxy rounded pxy flex flex-col items"
-    style="height: 550px; border-radius: 10px"
+    style="height: 650px; border-radius: 10px"
   >
     <div style="margin: 20px 0 0 20px">
       <a-button
@@ -120,30 +138,33 @@
         width="600px"
         :model="from"
         @cancel="handleCancel"
+        @ok="handleOk1"
       >
         <div style="display: flex">
           <a-form-item :model="from" label="标题" required>
-            <a-textarea auto-size></a-textarea>
+            <a-textarea v-model="from[0].title" auto-size></a-textarea>
           </a-form-item>
           <a-form-item label="权重" required>
             <a-textarea
+              v-model="from[0].order"
               cols="25"
               rows="7"
-              max-length="65"
-              show-word-limit
+              :max-length="65"
               auto-size
+              show-word-limit
             ></a-textarea>
           </a-form-item>
         </div>
 
-        <a-form-item field="id" label="上传图标" required>
+        <a-form-item label="上传图标" required>
           <div
             ><a-upload
-              action="/"
+              action="https://106.14.32.178:8080/api/system/upload"
               :file-list="file ? [file] : []"
               :show-file-list="false"
               @change="onChange"
               @progress="onProgress"
+              @success="onSuccess1"
             >
               <template #upload-button>
                 <div
@@ -190,98 +211,101 @@
         </a-form-item>
       </a-modal>
       <a-table :columns="columns" :data="data" :scroll="scroll">
-        <template #buttonBj="recode">
-          <a-button type="text" @click="handleClick(recode)">编辑</a-button>
-          <a-popconfirm content="是否确认删除">
+        <template #img="{ record }">
+          <a-image :src="record.img" width="100px"></a-image>
+        </template>
+        <template #buttonBj="{ record }">
+          <a-button type="text" @click="handleClick(record)">编辑</a-button>
+          <a-popconfirm content="是否确认删除" @ok="deleteList(record)">
             <a-tooltip content="删除此条"
               ><a-button style="color: #ee0202" type="text"
                 >删除</a-button
               ></a-tooltip
             >
           </a-popconfirm>
-          <a-modal
-            v-model:visible="visible"
-            title="编辑数据"
-            width="600px"
-            :model="from"
-            @cancel="handleCancel"
-          >
-            <div style="display: flex">
-              <a-form-item :model="from" label="标题" required>
-                <a-textarea
-                  v-model="from.title"
-                  cols="25"
-                  rows="6"
-                  auto-size
-                ></a-textarea>
-              </a-form-item>
-              <a-form-item label="权重" required>
-                <a-textarea
-                  v-model="from.Weights"
-                  cols="25"
-                  rows="7"
-                  max-length="65"
-                  show-word-limit
-                  auto-size
-                ></a-textarea>
-              </a-form-item>
-            </div>
+          <div v-if="from[1]">
+            <a-modal
+              v-model:visible="visible"
+              title="编辑数据"
+              width="600px"
+              :model="from"
+              @cancel="handleCancel"
+              @ok="handleOk"
+            >
+              <div style="display: flex">
+                <a-form-item label="标题" required>
+                  <a-textarea
+                    v-model="from[1].title"
+                    cols="25"
+                    rows="6"
+                    auto-size
+                  ></a-textarea>
+                </a-form-item>
+                <a-form-item label="权重" required>
+                  <a-textarea
+                    v-model="from[1].order"
+                    cols="25"
+                    rows="7"
+                    :max-length="65"
+                    show-word-limit
+                    auto-size
+                  ></a-textarea>
+                </a-form-item>
+              </div>
 
-            <a-form-item field="id" label="上传图标" required>
-              <div
-                ><a-upload
-                  action="/"
-                  :file-list="file ? [file] : []"
-                  :show-file-list="false"
-                  @change="onChange"
-                  @progress="onProgress"
-                >
-                  <template #upload-button>
-                    <div
-                      :class="`arco-upload-list-item${
-                        file && file.status === 'error'
-                          ? ' arco-upload-list-item-error'
-                          : ''
-                      }`"
-                    >
+              <a-form-item label="上传图标" required>
+                <div
+                  ><a-upload
+                    action="https://106.14.32.178:8080/api/system/upload"
+                    :file-list="file ? [file] : []"
+                    :show-file-list="false"
+                    @change="onChange"
+                    @progress="onProgress"
+                    @success="onSuccess"
+                  >
+                    <template #upload-button>
                       <div
-                        v-if="file && file.url"
-                        class="arco-upload-list-picture custom-upload-avatar"
+                        :class="`arco-upload-list-item${
+                          file && file.status === 'error'
+                            ? ' arco-upload-list-item-error'
+                            : ''
+                        }`"
                       >
-                        <img :src="file.url" />
-                        <div class="arco-upload-list-picture-mask">
-                          <IconEdit />
+                        <div
+                          v-if="file && file.url"
+                          class="arco-upload-list-picture custom-upload-avatar"
+                        >
+                          <img :src="file.url" />
+                          <div class="arco-upload-list-picture-mask">
+                            <IconEdit />
+                          </div>
+                          <a-progress
+                            v-if="
+                              file.status === 'uploading' && file.percent < 100
+                            "
+                            :percent="file.percent"
+                            type="circle"
+                            size="mini"
+                            :style="{
+                              position: 'absolute',
+                              left: '50%',
+                              top: '50%',
+                              transform: 'translateX(-50%) translateY(-50%)',
+                            }"
+                          />
                         </div>
-                        <a-progress
-                          v-if="
-                            file.status === 'uploading' && file.percent < 100
-                          "
-                          :percent="file.percent"
-                          type="circle"
-                          size="mini"
-                          :style="{
-                            position: 'absolute',
-                            left: '50%',
-                            top: '50%',
-                            transform: 'translateX(-50%) translateY(-50%)',
-                          }"
-                        />
-                      </div>
-                      <div v-else class="arco-upload-picture-card">
-                        <div class="arco-upload-picture-card-text">
-                          <IconPlus />
-                          <div style="margin-top: 10px; font-weight: 600"
-                            >Upload</div
-                          >
+                        <div v-else class="arco-upload-picture-card">
+                          <div class="arco-upload-picture-card-text">
+                            <a-image :src="from[1].img" width="130px"></a-image>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  </template>
-                </a-upload>
-                <div style="">图片宽高限制为：100×100</div></div
-              >
-            </a-form-item>
-          </a-modal>
+                    </template>
+                  </a-upload>
+                </div>
+              </a-form-item>
+            </a-modal>
+          </div>
         </template>
       </a-table>
     </div>
