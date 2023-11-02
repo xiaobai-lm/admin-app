@@ -51,6 +51,7 @@
   };
   const handleOk = async () => {
     await postTag(form[1]);
+    await postTag(form[1].synopsis);
     const tagList = await getTag();
     data.splice(0);
     data.push(...tagList.data);
