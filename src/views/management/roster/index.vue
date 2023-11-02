@@ -265,8 +265,8 @@
 </template>
 
 <script setup lang="ts">
-  import { reactive, ref } from 'vue';
-  import { getText } from '@/api/message';
+  import { reactive, ref, onMounted } from 'vue';
+  import { getEmployee } from '@/api/message';
 
   const columns = reactive([
     {
@@ -340,17 +340,20 @@
   const handleCancel = () => {
     visible.value = false;
   };
-  function onSelect(dateString, date) {
+  function onSelect(dateString: any, date: any) {
     console.log('onSelect', dateString, date);
   }
 
-  function onChange(dateString, date) {
+  function onChange(dateString: any, date: any) {
     console.log('onChange: ', dateString, date);
   }
 
-  function onOk(dateString, date) {
+  function onOk(dateString: any, date: any) {
     console.log('onOk: ', dateString, date);
   }
+  onMounted(async () => {
+    const x = await getEmployee();
+  });
 </script>
 
 <script lang="ts">

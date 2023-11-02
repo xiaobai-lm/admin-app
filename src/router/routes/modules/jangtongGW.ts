@@ -195,6 +195,16 @@ const DASHBOARD: AppRouteRecordRaw = {
         },
       ],
     },
+    {
+      path: 'wxjob',
+      name: 'Wxjob',
+      component: () => import('@/views/jiangtong/wxjob/index.vue'),
+      meta: {
+        locale: 'menu.jiangtong.wxjob',
+        requiresAuth: true,
+        roles: ['*'],
+      },
+    },
   ],
 };
 

@@ -30,6 +30,8 @@ import localeTag from '@/views/jiangtong/prescription/tag/locale/zh-CN';
 import localeContent from '@/views/jiangtong/prescription/content/locale/zh-CN';
 import localeChanges from '@/views/jiangtong/prescription/changes/locale/zh-CN';
 
+import localeWxjob from '@/views/jiangtong/wxjob//locale/zh-CN';
+
 import localeSettings from './zh-CN/settings';
 
 export default {
@@ -79,4 +81,5 @@ export default {
   ...localeTag,
   ...localeContent,
   ...localeChanges,
+  ...localeWxjob,
 };

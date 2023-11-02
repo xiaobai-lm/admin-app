@@ -11,6 +11,7 @@ export interface MessageRecord {
   status: 0 | 1;
   messageType?: number;
   tags: string;
+  tab: string;
 }
 export type MessageListType = MessageRecord[];
 
@@ -130,6 +131,10 @@ export function deleteCustomer(data: any) {
   return axios.delete<MessageListType>(`/api/customer?id=${data}`);
 }
 //      解决方案
+// 获取所有解决方案
+export function getPrescription() {
+  return axios.get<MessageListType>('/api/prescription');
+}
 // 方案列表
 export function getTag() {
   return axios.get<MessageListType>('/api/prescription/title');
@@ -142,23 +147,39 @@ export function deleteTag(data: any) {
 }
 // 内容列表
 export function getContent() {
-  return axios.get<MessageListType>('/api/content');
+  return axios.get<MessageListType>('/api/prescription/content');
 }
 export function postContent(data: any) {
-  return axios.post<MessageListType>('/api/content', data);
+  return axios.post<MessageListType>('/api/prescription/content', data);
 }
 export function deleteContent(data: any) {
-  return axios.delete<MessageListType>(`/api/content?id=${data}`);
+  return axios.delete<MessageListType>(`/api/prescription/content?id=${data}`);
 }
 // 内容细节api
 export function getChanges() {
-  return axios.get<MessageListType>('/api/changes');
+  return axios.get<MessageListType>('/api/prescription/desc');
 }
 export function postChanges(data: any) {
-  return axios.post<MessageListType>('/api/changes', data);
+  return axios.post<MessageListType>('/api/prescription/desc', data);
 }
 export function deleteChanges(data: any) {
-  return axios.delete<MessageListType>(`/api/changes?id=${data}`);
+  return axios.delete<MessageListType>(`/api/prescription/desc?id=${data}`);
+}
+// 招聘列表api
+export function getJobs() {
+  return axios.get<MessageListType>('/api/jobs');
+}
+export function postJobs(data: any) {
+  return axios.post<MessageListType>('/api/jobs', data);
+}
+export function deleteJobs(data: any) {
+  return axios.delete<MessageListType>(`/api/jobs?id=${data}`);
+}
+
+//      人员管理
+// 员工列表api
+export function getEmployee() {
+  return axios.get<MessageListType>('/api/employee');
 }
 //  文件上传api
 // export function postSystem(data: any) {
