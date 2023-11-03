@@ -3,7 +3,7 @@ import { AppRouteRecordRaw } from '../types';
 
 const DASHBOARD: AppRouteRecordRaw = {
   path: '/jiangtong',
-  name: 'jiangtong',
+  name: 'Jiangtong',
   component: DEFAULT_LAYOUT,
   meta: {
     locale: 'menu.jiangtong',

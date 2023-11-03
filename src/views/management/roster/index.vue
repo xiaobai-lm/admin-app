@@ -133,7 +133,7 @@
         <div class="ziduan"><icon-settings />花名册字段</div>
         <div class="ziduan1"><icon-download />导入</div>
         <div class="ziduan1"><icon-upload />导出</div>
-        <a-button type="primary" class="addPenson">
+        <a-button type="primary" class="addPenson" @click="handleClick1">
           <template #icon>
             <icon-plus />
           </template>
@@ -145,7 +145,6 @@
           title="编辑数据"
           width="600px"
           @cancel="handleCancel"
-          @before-ok="handleBeforeOk1"
         >
           <a-form :model="form" :style="{ width: '600px' }" layout="vertical">
             <a-form-item
@@ -416,9 +415,13 @@
     isRead: false,
   });
   const visible = ref(false);
+  const visible1 = ref(false);
 
   const handleClick = () => {
     visible.value = true;
+  };
+  const handleClick1 = () => {
+    visible1.value = true;
   };
   const handleOk = () => {
     visible.value = false;

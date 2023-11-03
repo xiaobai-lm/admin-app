@@ -206,7 +206,7 @@
           >
         </a-form-item>
       </a-modal>
-      //@ts-ignore
+      <!--      //@ts-ignore-->
       <a-table :columns="columns" :data="data">
         <template #icon="{ record }">
           <a-image :src="record.icon" width="100px"></a-image>

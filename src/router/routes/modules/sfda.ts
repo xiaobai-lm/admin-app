@@ -8,6 +8,8 @@ const DASHBOARD: AppRouteRecordRaw = {
   meta: {
     locale: 'menu.ehs',
     requiresAuth: true,
+    roles: ['admin'],
+
     icon: 'icon-dashboard',
     order: 0,
   },

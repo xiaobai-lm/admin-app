@@ -1,7 +1,7 @@
 <template>
   <div class="login-form-wrapper">
-    <div class="login-form-title">{{ $t('login.form.title') }}</div>
-    <div class="login-form-sub-title">{{ $t('login.form.title') }}</div>
+    <div class="login-form-title">登录上海疆通内部系统</div>
+    <!--    <div class="login-form-sub-title">{{ $t('login.form.title') }}</div>-->
     <div class="login-form-error-msg">{{ errorMessage }}</div>
     <a-form
       ref="loginForm"
@@ -55,9 +55,9 @@
         <a-button type="primary" html-type="submit" long :loading="loading">
           {{ $t('login.form.login') }}
         </a-button>
-        <a-button type="text" long class="login-form-register-btn">
-          {{ $t('login.form.register') }}
-        </a-button>
+        <!--        <a-button type="text" long class="login-form-register-btn">-->
+        <!--          &lt;!&ndash;          {{ $t('login.form.register') }}&ndash;&gt;-->
+        <!--        </a-button>-->
       </a-space>
     </a-form>
   </div>
@@ -104,7 +104,7 @@
         await userStore.login(values as LoginData);
         const { redirect, ...othersQuery } = router.currentRoute.value.query;
         router.push({
-          name: (redirect as string) || 'Workplace',
+          name: (redirect as string) || 'Introduction',
           query: {
             ...othersQuery,
           },

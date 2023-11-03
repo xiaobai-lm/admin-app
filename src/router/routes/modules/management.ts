@@ -9,6 +9,8 @@ const DASHBOARD: AppRouteRecordRaw = {
     locale: 'menu.management',
     requiresAuth: true,
     icon: 'icon-dashboard',
+    roles: ['admin'],
+
     order: 3,
   },
   children: [
