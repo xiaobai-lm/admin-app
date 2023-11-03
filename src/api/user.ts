@@ -11,17 +11,22 @@ export interface LoginRes {
   token: string;
 }
 export function login(data: LoginData) {
-  return axios.post<LoginRes>('/api/user/login', data);
+  return axios.post<LoginRes>(
+    'https://106.14.32.178:8080/api/user/login',
+    data
+  );
 }
 
 export function logout() {
-  return axios.post<LoginRes>('/api/user/logout');
+  return axios.post<LoginRes>('http://localhost:4173/api/user/logout');
 }
 
 export function getUserInfo() {
-  return axios.post<UserState>('/api/user/info');
+  return axios.post<UserState>('http://localhost:4173/api/user/info');
 }
 
 export function getMenuList() {
-  return axios.post<RouteRecordNormalized[]>('/api/user/menu');
+  return axios.post<RouteRecordNormalized[]>(
+    'http://localhost:4173/api/user/menu'
+  );
 }

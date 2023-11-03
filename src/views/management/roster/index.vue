@@ -91,7 +91,6 @@
                 :default-value="['正式']"
                 placeholder="Please select ..."
                 multiple
-                :scrollbar="scrollbar"
               >
                 <a-option>Beijing</a-option>
                 <a-option :tag-props="{ color: 'red' }">Shanghai</a-option>
@@ -134,122 +133,208 @@
         <div class="ziduan"><icon-settings />花名册字段</div>
         <div class="ziduan1"><icon-download />导入</div>
         <div class="ziduan1"><icon-upload />导出</div>
-        <a-trigger
-          trigger="click"
-          :unmount-on-close="false"
-          :popup-translate="[-480, -200]"
-        >
-          <a-button type="primary" class="addPenson">
-            <template #icon>
-              <icon-plus />
-            </template>
-            添加人员
-          </a-button>
-          <template #content>
-            <div class="demo-basic">
-              <div style="margin-left: 20px">
-                <div style="font-size: 18px; font-weight: 500; padding: 12px 0">
-                  添加人员</div
-                >
-                <div style="padding: 12px 0; font-size: 18px; font-weight: 500"
-                  ><a-divider
-                    direction="vertical"
-                    style="
-                      margin: 0;
-                      padding-right: 1.5px;
-                      background-color: #648de3;
-                    "
-                  /><span style="margin: 0 10px">个人信息</span></div
-                >
-                <div>
-                  <a-form
-                    :model="form"
-                    :style="{ width: '600px' }"
-                    layout="vertical"
-                    @submit="handleSubmit"
-                  >
-                    <a-form-item
-                      field="name"
-                      label="姓名"
-                      required
-                      asterisk-position="end"
-                    >
-                      <a-input v-model="form.name" />
-                      <template #extra>
-                        <a-button type="text" size="mini"
-                          ><icon-plus />添加英文</a-button
-                        >
-                      </template>
-                    </a-form-item>
-                    <a-form-item
-                      field="post"
-                      label="手机号码"
-                      required
-                      asterisk-position="end"
-                    >
-                      <a-input v-model="form.post" allow-clear>
-                        <template #prepend> +86 </template>
-                      </a-input>
-                    </a-form-item>
-                    <a-form-item field="email" label="工作邮箱">
-                      <a-input v-model="form.email" />
-                    </a-form-item>
-                    <a-form-item field="jobNumber" label="工号">
-                      <a-input v-model="form.jobNumber" />
-                    </a-form-item>
-                    <a-form-item field="id" label="用户ID">
-                      <a-input v-model="form.id" />
-                    </a-form-item>
-                    <div
-                      style="padding: 12px 0; font-size: 18px; font-weight: 500"
-                      ><a-divider
-                        direction="vertical"
-                        style="
-                          margin: 0;
-                          padding-right: 1.5px;
-                          background-color: #648de3;
-                        "
-                      /><span style="margin: 0 10px">工作信息</span></div
-                    >
-                    <a-form-item
-                      field="id"
-                      label="人员类型"
-                      required
-                      asterisk-position="end"
-                    >
-                      <a-input v-model="form.id" />
-                    </a-form-item>
-                    <a-form-item
-                      field="time"
-                      label="入职日期"
-                      required
-                      asterisk-position="end"
-                    >
-                      <a-date-picker v-model="form.time" />
-                    </a-form-item>
-                    <a-form-item field="isRead">
-                      <a-checkbox v-model="form.isRead">
-                        I have read the manual
-                      </a-checkbox>
-                    </a-form-item>
-                    <a-form-item style="margin-left: 460px">
-                      <a-button style="margin-right: 20px; width: 60px"
-                        >取消</a-button
-                      >
-                      <a-button
-                        html-type="submit"
-                        type="primary"
-                        style="width: 60px"
-                        >确定</a-button
-                      >
-                    </a-form-item>
-                  </a-form>
-                  {{ form }}
-                </div>
-              </div>
-            </div>
+        <a-button type="primary" class="addPenson">
+          <template #icon>
+            <icon-plus />
           </template>
-        </a-trigger>
+          添加人员
+        </a-button>
+
+        <a-modal
+          v-model:visible="visible1"
+          title="编辑数据"
+          width="600px"
+          @cancel="handleCancel"
+          @before-ok="handleBeforeOk1"
+        >
+          <a-form :model="form" :style="{ width: '600px' }" layout="vertical">
+            <a-form-item
+              field="name"
+              label="姓名"
+              required
+              asterisk-position="end"
+            >
+              <a-input v-model="form.name" />
+              <template #extra>
+                <a-button type="text" size="mini"
+                  ><icon-plus />添加英文</a-button
+                >
+              </template>
+            </a-form-item>
+            <a-form-item
+              field="post"
+              label="手机号码"
+              required
+              asterisk-position="end"
+            >
+              <a-input v-model="form.post" allow-clear>
+                <template #prepend> +86 </template>
+              </a-input>
+            </a-form-item>
+            <a-form-item field="email" label="工作邮箱">
+              <a-input v-model="form.email" />
+            </a-form-item>
+            <a-form-item field="jobNumber" label="工号">
+              <a-input v-model="form.jobNumber" />
+            </a-form-item>
+            <a-form-item field="id" label="用户ID">
+              <a-input v-model="form.id" />
+            </a-form-item>
+            <div style="padding: 12px 0; font-size: 18px; font-weight: 500"
+              ><a-divider
+                direction="vertical"
+                style="
+                  margin: 0;
+                  padding-right: 1.5px;
+                  background-color: #648de3;
+                "
+              /><span style="margin: 0 10px">工作信息</span></div
+            >
+            <a-form-item
+              field="id"
+              label="人员类型"
+              required
+              asterisk-position="end"
+            >
+              <a-input v-model="form.id" />
+            </a-form-item>
+            <a-form-item
+              field="time"
+              label="入职日期"
+              required
+              asterisk-position="end"
+            >
+              <a-date-picker v-model="form.time" />
+            </a-form-item>
+            <a-form-item field="isRead">
+              <a-checkbox v-model="form.isRead">
+                I have read the manual
+              </a-checkbox>
+            </a-form-item>
+            <a-form-item style="margin-left: 460px">
+              <a-button style="margin-right: 20px; width: 60px">取消</a-button>
+              <a-button html-type="submit" type="primary" style="width: 60px"
+                >确定</a-button
+              >
+            </a-form-item>
+          </a-form>
+        </a-modal>
+
+        <!--        <a-trigger-->
+        <!--          trigger="click"-->
+        <!--          :unmount-on-close="false"-->
+        <!--          :popup-translate="[-480, -200]"-->
+        <!--        >-->
+        <!--          <a-button type="primary" class="addPenson">-->
+        <!--            <template #icon>-->
+        <!--              <icon-plus />-->
+        <!--            </template>-->
+        <!--            添加人员-->
+        <!--          </a-button>-->
+        <!--          <template #content>-->
+        <!--            <div class="demo-basic">-->
+        <!--              <div style="margin-left: 20px">-->
+        <!--                <div style="font-size: 18px; font-weight: 500; padding: 12px 0">-->
+        <!--                  添加人员</div-->
+        <!--                >-->
+        <!--                <div style="padding: 12px 0; font-size: 18px; font-weight: 500"-->
+        <!--                  ><a-divider-->
+        <!--                    direction="vertical"-->
+        <!--                    style="-->
+        <!--                      margin: 0;-->
+        <!--                      padding-right: 1.5px;-->
+        <!--                      background-color: #648de3;-->
+        <!--                    "-->
+        <!--                  /><span style="margin: 0 10px">个人信息</span></div-->
+        <!--                >-->
+        <!--                <div>-->
+        <!--                  <a-form-->
+        <!--                    :model="form"-->
+        <!--                    :style="{ width: '600px' }"-->
+        <!--                    layout="vertical"-->
+        <!--                  >-->
+        <!--                    <a-form-item-->
+        <!--                      field="name"-->
+        <!--                      label="姓名"-->
+        <!--                      required-->
+        <!--                      asterisk-position="end"-->
+        <!--                    >-->
+        <!--                      <a-input v-model="form.name" />-->
+        <!--                      <template #extra>-->
+        <!--                        <a-button type="text" size="mini"-->
+        <!--                          ><icon-plus />添加英文</a-button-->
+        <!--                        >-->
+        <!--                      </template>-->
+        <!--                    </a-form-item>-->
+        <!--                    <a-form-item-->
+        <!--                      field="post"-->
+        <!--                      label="手机号码"-->
+        <!--                      required-->
+        <!--                      asterisk-position="end"-->
+        <!--                    >-->
+        <!--                      <a-input v-model="form.post" allow-clear>-->
+        <!--                        <template #prepend> +86 </template>-->
+        <!--                      </a-input>-->
+        <!--                    </a-form-item>-->
+        <!--                    <a-form-item field="email" label="工作邮箱">-->
+        <!--                      <a-input v-model="form.email" />-->
+        <!--                    </a-form-item>-->
+        <!--                    <a-form-item field="jobNumber" label="工号">-->
+        <!--                      <a-input v-model="form.jobNumber" />-->
+        <!--                    </a-form-item>-->
+        <!--                    <a-form-item field="id" label="用户ID">-->
+        <!--                      <a-input v-model="form.id" />-->
+        <!--                    </a-form-item>-->
+        <!--                    <div-->
+        <!--                      style="padding: 12px 0; font-size: 18px; font-weight: 500"-->
+        <!--                      ><a-divider-->
+        <!--                        direction="vertical"-->
+        <!--                        style="-->
+        <!--                          margin: 0;-->
+        <!--                          padding-right: 1.5px;-->
+        <!--                          background-color: #648de3;-->
+        <!--                        "-->
+        <!--                      /><span style="margin: 0 10px">工作信息</span></div-->
+        <!--                    >-->
+        <!--                    <a-form-item-->
+        <!--                      field="id"-->
+        <!--                      label="人员类型"-->
+        <!--                      required-->
+        <!--                      asterisk-position="end"-->
+        <!--                    >-->
+        <!--                      <a-input v-model="form.id" />-->
+        <!--                    </a-form-item>-->
+        <!--                    <a-form-item-->
+        <!--                      field="time"-->
+        <!--                      label="入职日期"-->
+        <!--                      required-->
+        <!--                      asterisk-position="end"-->
+        <!--                    >-->
+        <!--                      <a-date-picker v-model="form.time" />-->
+        <!--                    </a-form-item>-->
+        <!--                    <a-form-item field="isRead">-->
+        <!--                      <a-checkbox v-model="form.isRead">-->
+        <!--                        I have read the manual-->
+        <!--                      </a-checkbox>-->
+        <!--                    </a-form-item>-->
+        <!--                    <a-form-item style="margin-left: 460px">-->
+        <!--                      <a-button style="margin-right: 20px; width: 60px"-->
+        <!--                        >取消</a-button-->
+        <!--                      >-->
+        <!--                      <a-button-->
+        <!--                        html-type="submit"-->
+        <!--                        type="primary"-->
+        <!--                        style="width: 60px"-->
+        <!--                        >确定</a-button-->
+        <!--                      >-->
+        <!--                    </a-form-item>-->
+        <!--                  </a-form>-->
+        <!--                  {{ form }}-->
+        <!--                </div>-->
+        <!--              </div>-->
+        <!--            </div>-->
+        <!--          </template>-->
+        <!--        </a-trigger>-->
       </div>
 
       <div class="list">
@@ -267,6 +352,7 @@
 <script setup lang="ts">
   import { reactive, ref, onMounted } from 'vue';
   import { getEmployee } from '@/api/message';
+  import { IconEdit, IconPlus } from '@arco-design/web-vue/es/icon';
 
   const columns = reactive([
     {
@@ -351,15 +437,9 @@
   function onOk(dateString: any, date: any) {
     console.log('onOk: ', dateString, date);
   }
-  onMounted(async () => {
-    const x = await getEmployee();
-  });
-</script>
-
-<script lang="ts">
-  export default {
-    name: 'Roster',
-  };
+  // onMounted(async () => {
+  //   const x = await getEmployee();
+  // });
 </script>
 
 <style scoped lang="less">
@@ -392,7 +472,7 @@
     float: left;
     text-align: center;
     font-weight: 500;
-    width: 76px;
+    width: 86px;
     margin-top: 0;
   }
   .hand1 {

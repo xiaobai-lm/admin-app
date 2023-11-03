@@ -6,7 +6,7 @@
     post: '',
     isRead: false,
   });
-  const handleSubmit = (data) => {
+  const handleSubmit = (data: any) => {
     console.log(data);
   };
 </script>
@@ -23,9 +23,6 @@
           ><a-range-picker
             style="width: 220px; margin: 0 24px 24px 0; border-radius: 7px"
             format="YYYY-MM-DD "
-            @change="onChange"
-            @select="onSelect"
-            @ok="onOk"
           />
         </div>
         <div
@@ -47,7 +44,6 @@
             :default-value="['包含离职人员和转出人员']"
             placeholder="Please select ..."
             multiple
-            :scrollbar="scrollbar"
           >
             <a-option>包含离职人员和转出人员</a-option>
             <a-option :tag-props="{ color: 'red' }">Shanghai</a-option>
@@ -65,7 +61,7 @@
           label="Username"
         >
           <a-input
-            v-model="form.nameas"
+            v-model="form.name"
             placeholder="please enter your username..."
           />
         </a-form-item>

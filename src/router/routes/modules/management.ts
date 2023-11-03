@@ -19,7 +19,7 @@ const DASHBOARD: AppRouteRecordRaw = {
       meta: {
         locale: 'menu.management.roster',
         requiresAuth: true,
-        roles: ['admin'],
+        roles: ['*'],
       },
     },
     {
@@ -29,7 +29,7 @@ const DASHBOARD: AppRouteRecordRaw = {
       meta: {
         locale: 'menu.management.care',
         requiresAuth: true,
-        roles: ['admin'],
+        roles: ['*'],
       },
     },
     {
@@ -39,7 +39,7 @@ const DASHBOARD: AppRouteRecordRaw = {
       meta: {
         locale: 'menu.management.attendance',
         requiresAuth: true,
-        roles: ['admin'],
+        roles: ['*'],
       },
     },
     {
@@ -49,7 +49,7 @@ const DASHBOARD: AppRouteRecordRaw = {
       meta: {
         locale: 'menu.management.statistics',
         requiresAuth: true,
-        roles: ['admin'],
+        roles: ['*'],
       },
     },
   ],

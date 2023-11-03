@@ -16,7 +16,7 @@
     file.value = currentFile;
   };
 
-  const columns = [
+  const columns: any = [
     {
       title: 'id',
       dataIndex: 'id',

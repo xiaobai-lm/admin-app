@@ -4,7 +4,7 @@
 
   const show = ref(true);
 
-  const columns = [
+  const columns: any = [
     {
       title: '姓名',
       dataIndex: 'name',

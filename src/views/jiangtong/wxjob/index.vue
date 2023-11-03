@@ -2,7 +2,7 @@
   import { reactive, ref, onMounted } from 'vue';
   import { getJobs, postJobs, deleteJobs } from '@/api/message';
 
-  const columns = [
+  const columns: any = [
     {
       title: '职位名称',
       dataIndex: 'title',

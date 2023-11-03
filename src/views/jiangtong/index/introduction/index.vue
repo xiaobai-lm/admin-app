@@ -5,7 +5,7 @@
   const show = ref(true);
   const index = ref(0);
 
-  const columns = [
+  const columns: any = [
     {
       title: '媒体链接',
       slotName: 'optional',

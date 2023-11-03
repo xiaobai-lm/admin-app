@@ -1,13 +1,16 @@
 <script setup lang="ts">
+  //  引入图标
   import { IconEdit, IconPlus } from '@arco-design/web-vue/es/icon';
+  // vue按需引入
   import { reactive, ref, onMounted } from 'vue';
+  // 接口引入
   import {
     getChanges,
     postChanges,
     deleteChanges,
     getContent,
   } from '@/api/message';
-
+  // 文件上传存储变量
   const file = ref();
 
   // 用于初始化列表对象
@@ -26,7 +29,7 @@
   const onProgress = (currentFile: any) => {
     file.value = currentFile;
   };
-
+  // 表单设置
   const columns = [
     {
       title: '#',
@@ -59,7 +62,7 @@
   const data: any = reactive([]);
   const visible = ref(false);
   const visible1 = ref(false);
-
+  // 数据提交初始化
   const form = reactive([
     {
       title: '',
@@ -69,21 +72,23 @@
       prescriptionContentId: '',
     },
   ]);
-
+  // 编辑弹出触发
   const handleClick = (record: any) => {
     visible.value = true;
     // console.log(record);
     form.push(record);
   };
+  // 新增弹窗触发
   const handleClick1 = () => {
     visible1.value = true;
   };
-
+  // 弹窗取消触发
   const handleCancel = () => {
     visible.value = false;
     visible1.value = false;
     form.splice(1, 1);
   };
+  // 提交确认触发
   const handleOk = async () => {
     if (form[1]) {
       // 编辑修改后则调用发送请求
@@ -102,6 +107,7 @@
       });
       await postChanges(form[0]);
     }
+    // 提交后重新获取数据
     const contentList: any = await getContent();
     const descList = await getChanges();
     form.splice(1, 1);
@@ -191,6 +197,7 @@
         return 0;
       });
     });
+    // 获取分类标题
     contentList.data.forEach((item: any) => {
       optionList.push(item.title);
     });

@@ -26,9 +26,7 @@ interface MessageStatus {
 export function setMessageStatus(data: MessageStatus) {
   return axios.post<MessageListType>('/api/message/read', data);
 }
-export function getText() {
-  return axios.get<MessageListType>('/api/news');
-}
+
 // 首页api
 //  官网简介api
 export function getBrief() {
@@ -131,10 +129,7 @@ export function deleteCustomer(data: any) {
   return axios.delete<MessageListType>(`/api/customer?id=${data}`);
 }
 //      解决方案
-// 获取所有解决方案
-export function getPrescription() {
-  return axios.get<MessageListType>('/api/prescription');
-}
+
 // 方案列表
 export function getTag() {
   return axios.get<MessageListType>('/api/prescription/title');

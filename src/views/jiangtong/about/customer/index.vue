@@ -13,7 +13,7 @@
   const onProgress = (currentFile: any) => {
     file.value = currentFile;
   };
-  const columns = [
+  const columns: any = [
     {
       title: '#',
       dataIndex: 'id',

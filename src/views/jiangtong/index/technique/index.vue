@@ -17,7 +17,7 @@
     file.value = currentFile;
   };
 
-  const columns = [
+  const columns: any = [
     {
       title: '标题',
       dataIndex: 'title',

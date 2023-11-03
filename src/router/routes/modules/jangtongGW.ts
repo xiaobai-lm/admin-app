@@ -19,7 +19,7 @@ const DASHBOARD: AppRouteRecordRaw = {
       meta: {
         locale: 'menu.jiangtong.index',
         requiresAuth: true,
-        roles: ['admin'],
+        roles: ['*'],
       },
       children: [
         {

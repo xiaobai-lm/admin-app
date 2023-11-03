@@ -2,7 +2,7 @@
   import { reactive, ref, onMounted } from 'vue';
   import { getCases, postCases, deleteCases } from '@/api/message';
 
-  const columns = [
+  const columns: any = [
     {
       title: '标题',
       dataIndex: 'title',

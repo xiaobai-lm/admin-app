@@ -13,7 +13,7 @@
   const onProgress = (currentFile: any) => {
     file.value = currentFile;
   };
-  const columns = [
+  const columns: any = [
     {
       title: '#',
       dataIndex: 'id',
@@ -206,6 +206,7 @@
           >
         </a-form-item>
       </a-modal>
+      //@ts-ignore
       <a-table :columns="columns" :data="data">
         <template #icon="{ record }">
           <a-image :src="record.icon" width="100px"></a-image>
