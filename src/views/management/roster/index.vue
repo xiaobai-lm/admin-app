@@ -143,7 +143,7 @@
         <a-modal
           v-model:visible="visible1"
           title="编辑数据"
-          width="600px"
+          width="650px"
           @cancel="handleCancel"
         >
           <a-form :model="form" :style="{ width: '600px' }" layout="vertical">
@@ -209,12 +209,6 @@
               <a-checkbox v-model="form.isRead">
                 I have read the manual
               </a-checkbox>
-            </a-form-item>
-            <a-form-item style="margin-left: 460px">
-              <a-button style="margin-right: 20px; width: 60px">取消</a-button>
-              <a-button html-type="submit" type="primary" style="width: 60px"
-                >确定</a-button
-              >
             </a-form-item>
           </a-form>
         </a-modal>

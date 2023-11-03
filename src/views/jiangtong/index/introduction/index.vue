@@ -112,7 +112,7 @@
     <div style="margin: 20px 20px 0 20px"
       ><a-table v-if="data" :columns="columns" :data="data">
         <template #optional="{ record }">
-          <a-link :href="record.url">视频链接</a-link>
+          <a-link :href="record.url" target="_blank">视频链接</a-link>
         </template>
         <template #buttonBj="{ record }">
           <a-button type="text" @click="handleClick(record)">编辑</a-button>
