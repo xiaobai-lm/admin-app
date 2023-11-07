@@ -12,6 +12,8 @@ export interface MessageRecord {
   messageType?: number;
   tags: string;
   tab: string;
+  summarize: string;
+  img: string;
 }
 export type MessageListType = MessageRecord[];
 

@@ -188,6 +188,9 @@
     console.log(serveList.data[0].tags);
     for (let i = 0; i < serveList.data.length; i += 1) {
       data[i].id = serveList.data[i].tags;
+      data[i].content = serveList.data[i].summarize;
+      data[i].img = serveList.data[i].img;
+
       data[i].children = serveList.data[i].content;
     }
   });
@@ -308,7 +311,7 @@
                     </div>
                   </template>
                 </a-upload>
-                <div style="">图片宽高限制为：100×100</div></div
+                <div style="">图片宽高限制为：810×190</div></div
               >
             </a-form-item>
           </a-form>
@@ -442,7 +445,7 @@
                         </div>
                       </template>
                     </a-upload>
-                    <div style="">图片宽高限制为：100×100</div></div
+                    <div style="">图片宽高限制为：810×190</div></div
                   >
                 </a-form-item>
               </a-form>

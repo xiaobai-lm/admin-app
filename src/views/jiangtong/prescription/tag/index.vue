@@ -112,7 +112,7 @@
                 v-model="form[0].synopsis"
                 cols="25"
                 rows="6"
-                :max-length="65"
+                :max-length="165"
                 auto-size
                 show-word-limit
               ></a-textarea>
@@ -157,7 +157,7 @@
                     v-model="form[1].synopsis"
                     cols="25"
                     rows="7"
-                    :max-length="65"
+                    :max-length="165"
                     show-word-limit
                     auto-size
                   ></a-textarea>

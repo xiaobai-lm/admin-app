@@ -169,7 +169,7 @@
   onMounted(async () => {
     const titleList = await getTag();
     const contentList: any = await getContent();
-    titleList.data.forEach((item: any) => {
+    titleList.data.forEach((item: any, index) => {
       optionList.push(item.tab);
     });
     for (let i = 0; i < titleList.data.length; i += 1) {

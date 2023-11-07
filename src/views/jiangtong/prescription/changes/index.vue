@@ -29,6 +29,8 @@
   const onProgress = (currentFile: any) => {
     file.value = currentFile;
   };
+  // select 选择框数据
+  const optionList: any = reactive([]);
   // 表单设置
   const columns = [
     {
@@ -81,6 +83,11 @@
   // 新增弹窗触发
   const handleClick1 = () => {
     visible1.value = true;
+    form[0].title = '';
+    form[0].icon = '';
+    form[0].msg = '';
+    form[0].tab = '';
+    form[0].prescriptionContentId = '';
   };
   // 弹窗取消触发
   const handleCancel = () => {
@@ -92,19 +99,25 @@
   const handleOk = async () => {
     if (form[1]) {
       // 编辑修改后则调用发送请求
-      data.forEach((item1: any) => {
-        if (item1.id === form[1].tab) {
-          form[1].prescriptionContentId = item1.prescriptionContentId;
-        }
-      });
+      // data.forEach((item1: any) => {
+      //   if (item1.id === form[1].tab) {
+      //     form[1].prescriptionContentId = item1.prescriptionContentId;
+      //   }
+      // });
+      console.log(form[1].tab.slice(0, 2));
+      form[1].prescriptionContentId = form[1].tab.slice(0, 2);
       await postChanges(form[1]);
     } else {
       // 如果不是修改,则发送新增请求
-      data.forEach((item1: any) => {
-        if (item1.id === form[0].tab) {
-          form[0].prescriptionContentId = item1.prescriptionContentId;
-        }
-      });
+      form[0].prescriptionContentId = form[0].tab.slice(0, 2);
+
+      console.log(form[0].tab.slice(0, 2));
+
+      // data.forEach((item1: any) => {
+      //   if (item1.id === form[0].tab) {
+      //     form[0].prescriptionContentId = item1.prescriptionContentId;
+      //   }
+      // });
       await postChanges(form[0]);
     }
     // 提交后重新获取数据
@@ -173,8 +186,7 @@
       });
     });
   };
-  // select 选择框数据
-  const optionList: any = reactive([]);
+
   // 初始化页面数据,发送获取请求
   onMounted(async () => {
     const contentList: any = await getContent();
@@ -197,9 +209,11 @@
         return 0;
       });
     });
+    // 初始标签
+
     // 获取分类标题
-    contentList.data.forEach((item: any) => {
-      optionList.push(item.title);
+    contentList.data.forEach((item: any, index: any) => {
+      optionList.push(item.id + item.title);
     });
   });
 </script>
@@ -314,10 +328,10 @@
 
       <a-table :columns="columns" :data="data" :scroll="scroll">
         <template #icon="{ record }">
-          <a-image :src="record.icon" width="100px" />
+          <a-image :src="record.icon" width="70px" />
         </template>
         <template #cell="{ record }">
-          <a-button type="text" @click="handleClick(record)">编辑</a-button>
+          <a-button type="text" @click="handleClick(record)">编辑 </a-button>
           <a-popconfirm content="是否确认删除" @ok="deleteList(record)">
             <a-tooltip content="删除此条"
               ><a-button style="color: #ee0202" type="text"
