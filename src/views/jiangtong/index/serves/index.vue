@@ -262,7 +262,7 @@
             <a-form-item label="上传图标" required>
               <div
                 ><a-upload
-                  action="https://106.14.32.178:8080/api/system/upload"
+                  action="https://www.jungt.com:8080/api/system/upload"
                   :file-list="file ? [file] : []"
                   :show-file-list="false"
                   @change="onChange"
@@ -395,7 +395,7 @@
                 <a-form-item field="id" label="上传图标" required>
                   <div
                     ><a-upload
-                      action="https://106.14.32.178:8080/api/system/upload"
+                      action="https://www.jungt.com:8080/api/system/upload"
                       :file-list="file ? [file] : []"
                       :show-file-list="false"
                       @change="onChange"

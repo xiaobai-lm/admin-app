@@ -1,6 +1,6 @@
 import axios from 'axios';
 import type { AxiosRequestConfig, AxiosResponse } from 'axios';
-import { Message, Modal } from '@arco-design/web-vue';
+import { Message } from '@arco-design/web-vue';
 import { useUserStore } from '@/store';
 import { getToken } from '@/utils/auth';
 
@@ -12,7 +12,7 @@ export interface HttpResponse<T = unknown> {
   code: number;
 }
 
-const baseUrl = 'https://106.14.32.178:8080';
+const baseUrl = 'https://www.jungt.com:8080';
 axios.defaults.baseURL = baseUrl;
 
 // if (import.meta.env.VITE_API_BASE_URL) {

@@ -138,7 +138,7 @@
                 <a-form-item label="上传视频" required asterisk-position="end">
                   <a-space direction="vertical" :style="{ width: '100%' }">
                     <a-upload
-                      action="https://106.14.32.178:8080/api/system/upload"
+                      action="https://www.jungt.com:8080/api/system/upload"
                       @success="onSuccess"
                     />
                   </a-space>

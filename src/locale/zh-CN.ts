@@ -36,7 +36,7 @@ import localeSettings from './zh-CN/settings';
 
 export default {
   'menu.dashboard': '仪表盘',
-  'menu.ehs': '不良事件',
+  'menu.ehs': '不良事',
   'menu.management': '人员管理',
   'menu.jiangtong': '疆通科技',
 
