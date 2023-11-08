@@ -92,6 +92,10 @@
     const customerList = await getCustomer();
     data.push(...customerList.data);
   });
+  const scroll = {
+    x: 200,
+    y: 450,
+  };
 </script>
 
 <template>
@@ -172,7 +176,7 @@
           >
         </a-form-item>
       </a-modal>
-      <a-table :columns="columns" :data="data">
+      <a-table :columns="columns" :data="data" :scroll="scroll">
         <template #img="{ record }">
           <a-image :src="record.img" width="80px"></a-image>
         </template>
