@@ -11,6 +11,7 @@ export interface MessageRecord {
   status: 0 | 1;
   messageType?: number;
   tags: string;
+  tagId: number;
   tab: string;
   summarize: string;
   img: string;
