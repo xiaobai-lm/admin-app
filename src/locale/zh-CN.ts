@@ -14,6 +14,7 @@ import localeIndex from '@/views/jiangtong/index/locale/zh-CN';
 import localeIntroduction from '@/views/jiangtong/index/introduction/locale/zh-CN';
 import localeAdvantages from '@/views/jiangtong/index/advantages/locale/zh-CN';
 import localeTechnique from '@/views/jiangtong/index/technique/locale/zh-CN';
+import localeServesTag from '@/views/jiangtong/index/servesTag/locale/zh-CN';
 import localeServes from '@/views/jiangtong/index/serves/locale/zh-CN';
 import localeCase from '@/views/jiangtong/index/case/locale/zh-CN';
 import localeNews from '@/views/jiangtong/index/news/locale/zh-CN';
@@ -82,4 +83,5 @@ export default {
   ...localeContent,
   ...localeChanges,
   ...localeWxjob,
+  ...localeServesTag,
 };

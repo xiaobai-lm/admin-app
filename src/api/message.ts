@@ -52,13 +52,21 @@ export function getTechnique() {
 export function postTechnique(data: any) {
   return axios.post<MessageListType>('/api/solution', data);
 }
-// 我们的服务api
-export function getServere() {
-  return axios.get<MessageListType>('/api/servere');
+// 我们的服务标签api
+export function getServereTag() {
+  return axios.get<MessageListType>('/api/servere/tag');
 }
 export function postServereTag(data: any) {
   return axios.post<MessageListType>('/api/servere/tag', data);
 }
+export function deleteServereTag(data: any) {
+  return axios.delete<MessageListType>(`/api/servere/tag?id=${data}`);
+}
+// 我们的服务api
+export function getServere() {
+  return axios.get<MessageListType>('/api/servere');
+}
+
 export function postServere(data: any) {
   return axios.post<MessageListType>('/api/servere', data);
 }

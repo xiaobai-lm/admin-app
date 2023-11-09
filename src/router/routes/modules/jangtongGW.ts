@@ -56,6 +56,17 @@ const DASHBOARD: AppRouteRecordRaw = {
           },
         },
         {
+          path: 'servesTag',
+          name: 'ServesTag',
+          component: () =>
+            import('@/views/jiangtong/index/servesTag/index.vue'),
+          meta: {
+            locale: 'menu.jiangtong.index.servesTag',
+            requiresAuth: true,
+            roles: ['*'],
+          },
+        },
+        {
           path: 'serves',
           name: 'Serves',
           component: () => import('@/views/jiangtong/index/serves/index.vue'),
