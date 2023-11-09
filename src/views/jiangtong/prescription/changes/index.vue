@@ -42,6 +42,10 @@
       dataIndex: 'title',
     },
     {
+      title: '栅格',
+      dataIndex: 'span',
+    },
+    {
       title: '内容',
       dataIndex: 'msg',
       ellipsis: true,
@@ -72,6 +76,7 @@
       msg: '',
       tab: '',
       prescriptionContentId: '',
+      span: '',
     },
   ]);
   // 编辑弹出触发
@@ -262,6 +267,12 @@
                 ></a-textarea></a-form-item
             ></div>
             <div style="display: flex">
+              <a-form-item label="栅格" required style="width: 330px">
+                <a-input
+                  v-model="form[0].span"
+                  style="margin-right: 20px"
+                ></a-input>
+              </a-form-item>
               <a-form-item label="标签">
                 <a-select v-model="form[0].tab" :options="optionList">
                 </a-select> </a-form-item
@@ -367,6 +378,12 @@
                     ></a-textarea></a-form-item
                 ></div>
                 <div style="display: flex">
+                  <a-form-item label="栅格" required style="width: 330px">
+                    <a-input
+                      v-model="form[1].span"
+                      style="margin-right: 20px"
+                    ></a-input>
+                  </a-form-item>
                   <a-form-item label="标签">
                     <a-select v-model="form[1].tab" :options="optionList">
                     </a-select> </a-form-item
