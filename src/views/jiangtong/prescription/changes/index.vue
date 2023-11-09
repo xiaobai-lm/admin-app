@@ -217,7 +217,7 @@
     // 初始标签
 
     // 获取分类标题
-    contentList.data.forEach((item: any, index: any) => {
+    contentList.data.forEach((item: any) => {
       optionList.push(item.id + item.title);
     });
   });

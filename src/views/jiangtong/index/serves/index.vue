@@ -1,7 +1,12 @@
 <script setup lang="ts">
   import { IconEdit, IconPlus } from '@arco-design/web-vue/es/icon';
   import { reactive, ref, onMounted } from 'vue';
-  import { deleteServere, getServere, postServere } from '@/api/message';
+  import {
+    deleteServere,
+    getServere,
+    postServere,
+    postServereTag,
+  } from '@/api/message';
 
   const file = ref();
   // 文件改变
@@ -126,12 +131,21 @@
   ];
   // 编辑功能提交数据
   const handleBeforeOk = async (done: any) => {
-    const value = list.indexOf(form[1].tag) + 1;
+    if (form[1].children) {
+      form[1].title = form[1].id;
+      form[1].id = form[1].tagId;
 
-    console.log(list.indexOf(form[1].tag));
-    // delete form[0].createdTime;
-    form[1].tag = value;
-    await postServere(form[1]);
+      form[1].summarize = form[1].content;
+      await postServereTag(form[1]);
+    } else {
+      const value = list.indexOf(form[1].tag) + 1;
+
+      console.log(list.indexOf(form[1].tag));
+      // delete form[0].createdTime;
+      form[1].tag = value;
+      await postServere(form[1]);
+    }
+
     const serveList1 = await getServere();
     for (let i = 0; i < serveList1.data.length; i += 1) {
       data[i].id = serveList1.data[i].tags;
@@ -153,6 +167,9 @@
     const serveList1 = await getServere();
     for (let i = 0; i < serveList1.data.length; i += 1) {
       data[i].id = serveList1.data[i].tags;
+      data[i].content = serveList1.data[i].summarize;
+      data[i].img = serveList1.data[i].img;
+      data[i].tagId = serveList1.data[i].tagId;
       data[i].children = serveList1.data[i].content;
     }
     window.setTimeout(() => {
@@ -190,7 +207,7 @@
       data[i].id = serveList.data[i].tags;
       data[i].content = serveList.data[i].summarize;
       data[i].img = serveList.data[i].img;
-
+      data[i].tagId = serveList.data[i].tagId;
       data[i].children = serveList.data[i].content;
     }
   });

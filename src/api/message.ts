@@ -55,6 +55,9 @@ export function postTechnique(data: any) {
 export function getServere() {
   return axios.get<MessageListType>('/api/servere');
 }
+export function postServereTag(data: any) {
+  return axios.post<MessageListType>('/api/servere/tag', data);
+}
 export function postServere(data: any) {
   return axios.post<MessageListType>('/api/servere', data);
 }

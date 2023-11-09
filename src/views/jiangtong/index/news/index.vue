@@ -286,7 +286,7 @@
                 <a-form-item label="上传图标" required>
                   <div
                     ><a-upload
-                      action="/"
+                      action="https://www.jungt.com:8080/api/system/upload"
                       :file-list="file ? [file] : []"
                       :show-file-list="false"
                       @change="onChange"
