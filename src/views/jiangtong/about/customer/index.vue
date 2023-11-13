@@ -13,7 +13,7 @@
   const onProgress = (currentFile: any) => {
     file.value = currentFile;
   };
-  const columns = [
+  const columns: any = [
     {
       title: '#',
       dataIndex: 'id',
@@ -92,6 +92,10 @@
     const customerList = await getCustomer();
     data.push(...customerList.data);
   });
+  const scroll = {
+    x: 200,
+    y: 450,
+  };
 </script>
 
 <template>
@@ -121,7 +125,7 @@
         <a-form-item field="id" label="上传图标" required>
           <div
             ><a-upload
-              action="https://106.14.32.178:8080/api/system/upload"
+              action="https://www.jungt.com:8080/api/system/upload"
               :file-list="file ? [file] : []"
               :show-file-list="false"
               @change="onChange"
@@ -172,7 +176,7 @@
           >
         </a-form-item>
       </a-modal>
-      <a-table :columns="columns" :data="data">
+      <a-table :columns="columns" :data="data" :scroll="scroll">
         <template #img="{ record }">
           <a-image :src="record.img" width="80px"></a-image>
         </template>
@@ -197,7 +201,7 @@
               <a-form-item field="id" label="上传图标" required>
                 <div
                   ><a-upload
-                    action="https://106.14.32.178:8080/api/system/upload"
+                    action="https://www.jungt.com:8080/api/system/upload"
                     :file-list="file ? [file] : []"
                     :show-file-list="false"
                     @change="onChange"

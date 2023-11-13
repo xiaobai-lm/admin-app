@@ -3,14 +3,14 @@
 
   const selectedKeys = ref(['Jane Doe', 'Alisa Ross']);
 
-  const rowSelection = reactive({
+  const rowSelection: any = reactive({
     type: 'checkbox',
     showCheckedAll: true,
     onlyCurrent: false,
   });
   const pagination = { pageSize: 5 };
 
-  const columns = [
+  const columns: any = [
     {
       title: '考勤组名称',
       dataIndex: 'name',

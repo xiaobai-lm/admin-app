@@ -11,6 +11,10 @@ export interface MessageRecord {
   status: 0 | 1;
   messageType?: number;
   tags: string;
+  tagId: number;
+  tab: string;
+  summarize: string;
+  img: string;
 }
 export type MessageListType = MessageRecord[];
 
@@ -25,9 +29,7 @@ interface MessageStatus {
 export function setMessageStatus(data: MessageStatus) {
   return axios.post<MessageListType>('/api/message/read', data);
 }
-export function getText() {
-  return axios.get<MessageListType>('/api/news');
-}
+
 // 首页api
 //  官网简介api
 export function getBrief() {
@@ -50,10 +52,21 @@ export function getTechnique() {
 export function postTechnique(data: any) {
   return axios.post<MessageListType>('/api/solution', data);
 }
+// 我们的服务标签api
+export function getServereTag() {
+  return axios.get<MessageListType>('/api/servere/tag');
+}
+export function postServereTag(data: any) {
+  return axios.post<MessageListType>('/api/servere/tag', data);
+}
+export function deleteServereTag(data: any) {
+  return axios.delete<MessageListType>(`/api/servere/tag?id=${data}`);
+}
 // 我们的服务api
 export function getServere() {
   return axios.get<MessageListType>('/api/servere');
 }
+
 export function postServere(data: any) {
   return axios.post<MessageListType>('/api/servere', data);
 }
@@ -128,6 +141,54 @@ export function postCustomer(data: any) {
 }
 export function deleteCustomer(data: any) {
   return axios.delete<MessageListType>(`/api/customer?id=${data}`);
+}
+//      解决方案
+
+// 方案列表
+export function getTag() {
+  return axios.get<MessageListType>('/api/prescription/title');
+}
+export function postTag(data: any) {
+  return axios.post<MessageListType>('/api/prescription/title', data);
+}
+export function deleteTag(data: any) {
+  return axios.delete<MessageListType>(`/api/prescription/title?id=${data}`);
+}
+// 内容列表
+export function getContent() {
+  return axios.get<MessageListType>('/api/prescription/content');
+}
+export function postContent(data: any) {
+  return axios.post<MessageListType>('/api/prescription/content', data);
+}
+export function deleteContent(data: any) {
+  return axios.delete<MessageListType>(`/api/prescription/content?id=${data}`);
+}
+// 内容细节api
+export function getChanges() {
+  return axios.get<MessageListType>('/api/prescription/desc');
+}
+export function postChanges(data: any) {
+  return axios.post<MessageListType>('/api/prescription/desc', data);
+}
+export function deleteChanges(data: any) {
+  return axios.delete<MessageListType>(`/api/prescription/desc?id=${data}`);
+}
+// 招聘列表api
+export function getJobs() {
+  return axios.get<MessageListType>('/api/jobs');
+}
+export function postJobs(data: any) {
+  return axios.post<MessageListType>('/api/jobs', data);
+}
+export function deleteJobs(data: any) {
+  return axios.delete<MessageListType>(`/api/jobs?id=${data}`);
+}
+
+//      人员管理
+// 员工列表api
+export function getEmployee() {
+  return axios.get<MessageListType>('/api/employee');
 }
 //  文件上传api
 // export function postSystem(data: any) {

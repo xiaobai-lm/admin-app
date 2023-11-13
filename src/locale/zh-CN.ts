@@ -14,6 +14,7 @@ import localeIndex from '@/views/jiangtong/index/locale/zh-CN';
 import localeIntroduction from '@/views/jiangtong/index/introduction/locale/zh-CN';
 import localeAdvantages from '@/views/jiangtong/index/advantages/locale/zh-CN';
 import localeTechnique from '@/views/jiangtong/index/technique/locale/zh-CN';
+import localeServesTag from '@/views/jiangtong/index/servesTag/locale/zh-CN';
 import localeServes from '@/views/jiangtong/index/serves/locale/zh-CN';
 import localeCase from '@/views/jiangtong/index/case/locale/zh-CN';
 import localeNews from '@/views/jiangtong/index/news/locale/zh-CN';
@@ -30,11 +31,13 @@ import localeTag from '@/views/jiangtong/prescription/tag/locale/zh-CN';
 import localeContent from '@/views/jiangtong/prescription/content/locale/zh-CN';
 import localeChanges from '@/views/jiangtong/prescription/changes/locale/zh-CN';
 
+import localeWxjob from '@/views/jiangtong/wxjob//locale/zh-CN';
+
 import localeSettings from './zh-CN/settings';
 
 export default {
   'menu.dashboard': '仪表盘',
-  'menu.ehs': '不良事件',
+  'menu.ehs': '不良事',
   'menu.management': '人员管理',
   'menu.jiangtong': '疆通科技',
 
@@ -48,8 +51,8 @@ export default {
   'menu.profile': '详情页',
   'menu.visualization': '数据可视化',
   'menu.user': '个人中心',
-  'menu.arcoWebsite': 'Arco Design',
-  'menu.faq': '常见问题',
+  'menu.arcoWebsite': '疆通科技',
+  'menu.faq': '常颖科技',
   'navbar.docs': '文档中心',
   'navbar.action.locale': '切换为中文',
   ...localeSettings,
@@ -79,4 +82,6 @@ export default {
   ...localeTag,
   ...localeContent,
   ...localeChanges,
+  ...localeWxjob,
+  ...localeServesTag,
 };

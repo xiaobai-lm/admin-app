@@ -2,7 +2,7 @@
   import { reactive, ref, onMounted } from 'vue';
   import { getCases, postCases, deleteCases } from '@/api/message';
 
-  const columns = [
+  const columns: any = [
     {
       title: '标题',
       dataIndex: 'title',
@@ -118,7 +118,7 @@
 <template>
   <div
     class="bg-white mxy rounded pxy flex flex-col items"
-    style="height: 550px; border-radius: 10px"
+    style="height: 650px; border-radius: 10px"
   >
     <div style="margin: 20px 0 0 20px">
       <a-button

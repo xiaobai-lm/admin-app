@@ -1,9 +1,14 @@
 <script setup lang="ts">
   import { reactive, ref, onMounted } from 'vue';
+  import {
+    getServereTag,
+    postServereTag,
+    deleteServereTag,
+  } from '@/api/message';
   import { IconEdit, IconPlus } from '@arco-design/web-vue/es/icon';
-  import { postNews, getNews, deleteNews } from '@/api/message';
 
   const file = ref();
+
   const onChange = (_: any, currentFile: any) => {
     file.value = {
       ...currentFile,
@@ -13,29 +18,25 @@
   const onProgress = (currentFile: any) => {
     file.value = currentFile;
   };
-
   const columns: any = [
+    {
+      title: 'id',
+      dataIndex: 'id',
+      width: 100,
+    },
     {
       title: '标题',
       dataIndex: 'title',
-      ellipsis: true,
-      tooltip: true,
     },
     {
-      title: '标签',
-      dataIndex: 'tag',
+      ellipsis: true,
+      tooltip: true,
+      title: '内容',
+      dataIndex: 'summarize',
     },
     {
       title: '图片',
       slotName: 'img',
-    },
-    {
-      title: '链接',
-      slotName: 'link',
-    },
-    {
-      title: '发布时间',
-      dataIndex: 'time',
     },
 
     {
@@ -54,28 +55,18 @@
   const visible = ref(false);
   const visible1 = ref(false);
 
-  const form: any = reactive([
-    {
-      content: '',
-      image: '',
-      link: '',
-      tag: '',
-      time: '',
-      title: '',
-    },
-  ]);
+  const form = reactive([{ title: '', img: '', summarize: '', id: '' }]);
 
-  const handleClick = async (record: any) => {
+  const handleClick = (record: any) => {
     visible.value = true;
     form.push(record);
   };
   const handleClick1 = () => {
     visible1.value = true;
-    form[0].time = '';
+    form[0].id = '';
+    form[0].img = '';
+    form[0].summarize = '';
     form[0].title = '';
-    form[0].tag = '';
-    form[0].link = '';
-    form[0].image = '';
   };
 
   const handleCancel = () => {
@@ -85,29 +76,25 @@
   };
   const handleBeforeOK = async () => {
     console.log(form[1]);
-    await postNews(form[1]);
+    await postServereTag(form[1]);
     data.splice(0);
-    const newsList1 = await getNews();
-    data.push(...newsList1.data);
-    // window.setTimeout(() => {
-    //   done();
-    //
-    //   // prevent close
-    //   // done(false)
-    // }, 3000);
+    const caseList2 = await getServereTag();
+    data.push(...caseList2.data);
     form.splice(1, 1);
   };
+  // 删除列表
   const deleteList = async (record: any) => {
     console.log(record.id);
-    await deleteNews(record.id);
+    await deleteServereTag(record.id);
     data.splice(0);
-    const newsList2 = await getNews();
-    data.push(...newsList2.data);
+    const caseList1 = await getServereTag();
+    data.push(...caseList1.data);
   };
+  // 新增功能提交数据
   const handleBeforeOk1 = async (done: any) => {
-    await postNews(form[0]);
+    await postServereTag(form[0]);
     data.splice(0);
-    const caseList2 = await getNews();
+    const caseList2 = await getServereTag();
     data.push(...caseList2.data);
     window.setTimeout(() => {
       done();
@@ -115,18 +102,24 @@
       // done(false)
     }, 1000);
   };
+  // 编辑功能上传文件成功
   const onSuccess = (fileItem: any) => {
     // console.log(fileItem);
-    form[0].image = fileItem.response.data;
-    form[1].image = fileItem.response.data;
+    form[1].img = fileItem.response.data;
+  };
+  // 新增功能上传文件成功
+  const onSuccess1 = (fileItem: any) => {
+    // console.log(fileItem);
+    form[0].img = fileItem.response.data;
   };
   const scroll = {
     x: 200,
-    y: 350,
+    y: 550,
   };
   onMounted(async () => {
-    const newsList = await getNews();
-    data.push(...newsList.data);
+    const caseList = await getServereTag();
+    // console.log(caseList.data);
+    data.push(...caseList.data);
   });
 </script>
 
@@ -153,30 +146,41 @@
         @cancel="handleCancel"
         @before-ok="handleBeforeOk1"
       >
-        <a-form :model="form" layout="vertical">
-          <div style="display: flex"
-            ><a-form-item
-              label="标题"
-              style="width: 130px; margin-right: 30px"
-              required
-            >
-              <a-input v-model="form[0].title" />
-            </a-form-item>
-            <a-form-item label="标签" required style="width: 230px">
-              <a-input v-model="form[0].tag" /> </a-form-item
-          ></div>
-          <div style="display: flex"
-            ><a-form-item
-              label="链接"
-              style="width: 130px; margin-right: 30px"
-              required
-            >
-              <a-input v-model="form[0].link" />
-            </a-form-item>
-            <div style="margin-top: 30px">
-              <a-date-picker v-model="form[0].time" style="width: 200px" />
-            </div>
-          </div>
+        <div style="display: flex">
+          <a-form-item label="id" required>
+            <a-textarea
+              v-model="form[0].id"
+              cols="25"
+              rows="7"
+              :max-length="65"
+              auto-size
+              show-word-limit
+            ></a-textarea>
+          </a-form-item>
+          <a-form-item label="标题" required>
+            <a-textarea
+              v-model="form[0].title"
+              cols="25"
+              rows="7"
+              :max-length="65"
+              auto-size
+              show-word-limit
+            ></a-textarea>
+          </a-form-item>
+        </div>
+        <div style="display: flex">
+          <a-form-item label="内容" required>
+            <a-textarea
+              v-model="form[0].summarize"
+              cols="25"
+              rows="6"
+              :max-length="165"
+              show-word-limit
+              auto-size
+            ></a-textarea>
+          </a-form-item>
+        </div>
+        <div style="display: flex">
           <a-form-item label="上传图标" required>
             <div
               ><a-upload
@@ -184,8 +188,8 @@
                 :file-list="file ? [file] : []"
                 :show-file-list="false"
                 @change="onChange"
-                @success="onSuccess"
                 @progress="onProgress"
+                @success="onSuccess1"
               >
                 <template #upload-button>
                   <div
@@ -227,17 +231,14 @@
                   </div>
                 </template>
               </a-upload>
-              <div style="">图片宽高限制为：330×200</div></div
+              <div style="">图片宽高限制为：100×100</div></div
             >
           </a-form-item>
-        </a-form>
+        </div>
       </a-modal>
       <a-table :columns="columns" :data="data" :scroll="scroll">
-        <template #link="{ record }">
-          <a-link :href="record.link">文章链接</a-link>
-        </template>
         <template #img="{ record }">
-          <a-image :src="record.image" height="60px"></a-image>
+          <a-image :src="record.img" width="120px" height="80px"></a-image>
         </template>
         <template #buttonBj="{ record }">
           <a-button type="text" @click="handleClick(record)">编辑</a-button>
@@ -248,40 +249,49 @@
               ></a-tooltip
             >
           </a-popconfirm>
-          <div v-if="form[1]">
-            <a-modal
-              v-model:visible="visible"
-              title="编辑数据"
-              width="600px"
-              @cancel="handleCancel"
-              @before-ok="handleBeforeOK"
-            >
+          <a-modal
+            v-model:visible="visible"
+            title="编辑数据"
+            width="600px"
+            @cancel="handleCancel"
+            @ok="handleBeforeOK"
+          >
+            <div v-if="form[1]">
               <a-form :model="form" layout="vertical">
-                <div style="display: flex"
-                  ><a-form-item
-                    label="标题"
-                    style="width: 130px; margin-right: 30px"
-                    required
-                  >
-                    <a-input v-model="form[1].title" />
+                <div style="display: flex">
+                  <a-form-item label="id" required disabled>
+                    <a-textarea
+                      v-model="form[1].id"
+                      cols="25"
+                      rows="6"
+                      auto-size
+                      class="juli-right"
+                    ></a-textarea>
                   </a-form-item>
-                  <a-form-item label="标签" required style="width: 230px">
-                    <a-input v-model="form[1].tag" /> </a-form-item
-                ></div>
-                <div style="display: flex"
-                  ><a-form-item
-                    label="链接"
-                    style="width: 130px; margin-right: 30px"
-                    required
-                  >
-                    <a-input v-model="form[1].link" />
+                  <a-form-item label="标题" required>
+                    <a-textarea
+                      v-model="form[1].title"
+                      cols="25"
+                      rows="7"
+                      :max-length="65"
+                      show-word-limit
+                      auto-size
+                      class="juli-left"
+                    ></a-textarea>
                   </a-form-item>
-                  <div style="margin-top: 30px">
-                    <a-date-picker
-                      v-model="form[1].time"
-                      style="width: 200px"
-                    />
-                  </div>
+                </div>
+                <div style="display: flex">
+                  <a-form-item label="内容" required>
+                    <a-textarea
+                      v-model="form[1].summarize"
+                      cols="25"
+                      rows="6"
+                      :max-length="165"
+                      show-word-limit
+                      auto-size
+                      class="juli-right"
+                    ></a-textarea>
+                  </a-form-item>
                 </div>
                 <a-form-item label="上传图标" required>
                   <div
@@ -328,19 +338,21 @@
                           <div v-else class="arco-upload-picture-card">
                             <div class="arco-upload-picture-card-text">
                               <a-image
-                                :src="form[1].image"
-                                width="200px"
+                                :src="form[1].img"
+                                width="100px"
+                                height="80px"
                               ></a-image>
                             </div>
                           </div>
                         </div>
                       </template>
                     </a-upload>
-                  </div>
+                    <div style="">图片宽高限制为：100×100</div></div
+                  >
                 </a-form-item>
               </a-form>
-            </a-modal>
-          </div>
+            </div>
+          </a-modal>
         </template>
       </a-table>
     </div>
@@ -352,5 +364,11 @@
     width: 80px;
     height: 80px;
     border: #aba8a8 dashed;
+  }
+  .juli-right {
+    margin-right: 10px;
+  }
+  .juli-left {
+    margin-left: 10px;
   }
 </style>

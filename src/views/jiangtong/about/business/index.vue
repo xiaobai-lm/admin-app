@@ -13,7 +13,7 @@
   const onProgress = (currentFile: any) => {
     file.value = currentFile;
   };
-  const columns = [
+  const columns: any = [
     {
       title: '#',
       dataIndex: 'id',
@@ -155,7 +155,7 @@
         <a-form-item field="id" label="上传图标" required>
           <div
             ><a-upload
-              action="https://106.14.32.178:8080/api/system/upload"
+              action="https://www.jungt.com:8080/api/system/upload"
               :file-list="file ? [file] : []"
               :show-file-list="false"
               @change="onChange"
@@ -206,6 +206,7 @@
           >
         </a-form-item>
       </a-modal>
+      <!--      //@ts-ignore-->
       <a-table :columns="columns" :data="data">
         <template #icon="{ record }">
           <a-image :src="record.icon" width="100px"></a-image>
@@ -252,7 +253,7 @@
               <a-form-item field="id" label="上传图标" required>
                 <div
                   ><a-upload
-                    action="https://106.14.32.178:8080/api/system/upload"
+                    action="https://www.jungt.com:8080/api/system/upload"
                     :file-list="file ? [file] : []"
                     :show-file-list="false"
                     @change="onChange"

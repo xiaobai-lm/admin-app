@@ -17,7 +17,7 @@
     file.value = currentFile;
   };
 
-  const columns = [
+  const columns: any = [
     {
       title: '标题',
       dataIndex: 'title',
@@ -96,7 +96,7 @@
 <template>
   <div
     class="bg-white mxy rounded pxy flex flex-col items"
-    style="height: 500px; border-radius: 10px"
+    style="height: 650px; border-radius: 10px"
   >
     <div style="margin: 20px"
       ><a-table :columns="columns" :data="data">
@@ -156,7 +156,7 @@
                 <a-form-item label="上传图标" required>
                   <div
                     ><a-upload
-                      action="https://106.14.32.178:8080/api/system/upload"
+                      action="https://www.jungt.com:8080/api/system/upload"
                       :file-list="file ? [file] : []"
                       :show-file-list="false"
                       @change="onChange"

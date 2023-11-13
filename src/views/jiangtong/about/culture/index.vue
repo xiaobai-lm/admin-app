@@ -2,7 +2,7 @@
   import { reactive, ref, onMounted } from 'vue';
   import { getCulture, postCulture, deleteCulture } from '@/api/message';
 
-  const columns = [
+  const columns: any = [
     {
       title: '#',
       dataIndex: 'id',

@@ -12,7 +12,7 @@
             />
           </div>
         </div>
-        <div class="tag-bar-operation"></div>
+        <!--        <div class="tag-bar-operation"></div>-->
       </div>
     </a-affix>
   </div>

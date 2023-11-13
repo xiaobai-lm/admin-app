@@ -6,7 +6,7 @@
   const show = ref(true);
   const index = ref(0);
 
-  const columns = [
+  const columns: any = [
     {
       title: '#',
       dataIndex: 'id',
@@ -103,7 +103,7 @@
 <template>
   <div
     class="bg-white mxy rounded pxy flex flex-col items"
-    style="height: 500px; border-radius: 10px"
+    style="height: 650px; border-radius: 10px"
   >
     <div style="margin: 20px 20px 0 20px">
       <a-table :columns="columns" :data="data">
@@ -153,7 +153,7 @@
                 <a-form-item label="上传图标" required>
                   <div
                     ><a-upload
-                      action="https://106.14.32.178:8080/api/system/upload"
+                      action="https://www.jungt.com:8080/api/system/upload"
                       name="file"
                       :file-list="file ? [file] : []"
                       :show-file-list="false"

@@ -5,7 +5,7 @@
   const show = ref(true);
   const index = ref(0);
 
-  const columns = [
+  const columns: any = [
     {
       title: '媒体链接',
       slotName: 'optional',
@@ -107,12 +107,12 @@
 <template>
   <div
     class="bg-white mxy rounded pxy flex flex-col items"
-    style="height: 500px; border-radius: 10px"
+    style="height: 650px; border-radius: 10px"
   >
     <div style="margin: 20px 20px 0 20px"
       ><a-table v-if="data" :columns="columns" :data="data">
         <template #optional="{ record }">
-          <a-link :href="record.url">视频链接</a-link>
+          <a-link :href="record.url" target="_blank">视频链接</a-link>
         </template>
         <template #buttonBj="{ record }">
           <a-button type="text" @click="handleClick(record)">编辑</a-button>
@@ -138,7 +138,7 @@
                 <a-form-item label="上传视频" required asterisk-position="end">
                   <a-space direction="vertical" :style="{ width: '100%' }">
                     <a-upload
-                      action="https://106.14.32.178:8080/api/system/upload"
+                      action="https://www.jungt.com:8080/api/system/upload"
                       @success="onSuccess"
                     />
                   </a-space>

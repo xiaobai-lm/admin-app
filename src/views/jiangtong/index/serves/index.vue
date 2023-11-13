@@ -1,7 +1,12 @@
 <script setup lang="ts">
   import { IconEdit, IconPlus } from '@arco-design/web-vue/es/icon';
   import { reactive, ref, onMounted } from 'vue';
-  import { deleteServere, getServere, postServere } from '@/api/message';
+  import {
+    deleteServere,
+    getServere,
+    postServere,
+    postServereTag,
+  } from '@/api/message';
 
   const file = ref();
   // 文件改变
@@ -15,8 +20,17 @@
   const onProgress = (currentFile: any) => {
     file.value = currentFile;
   };
+  const newList = {
+    children: [],
+    img: '',
+    summarize: '',
+    tagId: 0,
+    tags: '',
+    key: 0,
+  };
+  const list: any = [];
 
-  const columns = [
+  const columns: any = [
     {
       title: 'id',
       dataIndex: 'id',
@@ -55,30 +69,7 @@
       slotName: 'cell',
     },
   ];
-  const data: any = reactive([
-    {
-      key: 1,
-      id: '咨询·培训',
-      children: [],
-    },
-    {
-      key: 4,
-      id: 'AR/VR/MR眼镜方案',
-      children: [],
-    },
-    {
-      key: 8,
-
-      id: 'IT/OT/MR集成',
-      children: [],
-    },
-    {
-      key: 11,
-
-      id: '数据中心智能化建设服务',
-      children: [],
-    },
-  ]);
+  const data: any = reactive([]);
   const visible = ref(false);
   const visible1 = ref(false);
 
@@ -105,6 +96,7 @@
     form[0].img = '';
     form[0].span = '';
     form[0].title = '';
+    console.log(list);
   };
   // 取消弹窗
   const handleCancel = () => {
@@ -118,49 +110,65 @@
     y: 350,
   };
 
-  const list = [
-    '咨询·培训',
-    'AR/VR/MR眼镜方案',
-    'IT/OT/MR集成',
-    '数据中心智能化建设服务',
-  ];
   // 编辑功能提交数据
-  const handleBeforeOk = async (done: any) => {
-    const value = list.indexOf(form[1].tag) + 1;
+  const handleBeforeOk = async () => {
+    if (form[1].children) {
+      form[1].title = form[1].id;
+      form[1].id = form[1].tagId;
 
-    console.log(list.indexOf(form[1].tag));
-    // delete form[0].createdTime;
-    form[1].tag = value;
-    await postServere(form[1]);
+      form[1].summarize = form[1].content;
+      await postServereTag(form[1]);
+    } else {
+      const value = list.indexOf(form[1].tag) + 1;
+
+      console.log(list.indexOf(form[1].tag));
+      // delete form[0].createdTime;
+      form[1].tag = value;
+      await postServere(form[1]);
+    }
+    form.splice(1, 1);
+    data.splice(0);
     const serveList1 = await getServere();
     for (let i = 0; i < serveList1.data.length; i += 1) {
+      data.push(JSON.parse(JSON.stringify(newList)));
       data[i].id = serveList1.data[i].tags;
+      data[i].content = serveList1.data[i].summarize;
+      data[i].img = serveList1.data[i].img;
+      data[i].tagId = serveList1.data[i].tagId;
       data[i].children = serveList1.data[i].content;
+      data[i].key = serveList1.data[i].tagId;
     }
-    window.setTimeout(() => {
-      done();
-      form.splice(1, 1);
-      // prevent close
-      // done(false)
-    }, 1000);
+
+    // prevent close
+    // done(false)
   };
   // 新增功能提交数据
-  const handleBeforeOk1 = async (done: any) => {
+  const handleBeforeOk1 = async () => {
     // console.log(list.indexOf(form[0].tag));
     // delete form[0].createdTime;
-    form[0].tag = list.indexOf(form[0].tag) + 1;
+    data.forEach((item: any) => {
+      console.log(item);
+
+      if (item.id === form[0].tag) {
+        form[0].tagId = item.tagId;
+        form[0].tag = item.tagId;
+        console.log('xxx');
+      }
+    });
+    console.log(form[0]);
+    // form[0].tag = list.indexOf(form[0].tag) + 1;
     await postServere(form[0]);
+    data.splice(0);
     const serveList1 = await getServere();
     for (let i = 0; i < serveList1.data.length; i += 1) {
+      data.push(JSON.parse(JSON.stringify(newList)));
       data[i].id = serveList1.data[i].tags;
+      data[i].content = serveList1.data[i].summarize;
+      data[i].img = serveList1.data[i].img;
+      data[i].tagId = serveList1.data[i].tagId;
       data[i].children = serveList1.data[i].content;
+      data[i].key = serveList1.data[i].tagId;
     }
-    window.setTimeout(() => {
-      done();
-      form.splice(1, 1);
-      // prevent close
-      // done(false)
-    }, 1000);
   };
   // 编辑功能上传文件成功
   const onSuccess = (fileItem: any) => {
@@ -187,8 +195,14 @@
     const serveList = await getServere();
     console.log(serveList.data[0].tags);
     for (let i = 0; i < serveList.data.length; i += 1) {
+      data.push(JSON.parse(JSON.stringify(newList)));
       data[i].id = serveList.data[i].tags;
+      data[i].content = serveList.data[i].summarize;
+      data[i].img = serveList.data[i].img;
+      data[i].tagId = serveList.data[i].tagId;
       data[i].children = serveList.data[i].content;
+      data[i].key = serveList.data[i].tagId;
+      list.push(serveList.data[i].tags);
     }
   });
 </script>
@@ -196,7 +210,7 @@
 <template>
   <div
     class="bg-white mxy rounded pxy flex flex-col items"
-    style="height: 530px; border-radius: 10px"
+    style="height: 650px; border-radius: 10px"
   >
     <div style="margin: 20px 0 0 20px">
       <a-button
@@ -214,7 +228,7 @@
         title="编辑数据"
         width="600px"
         @cancel="handleCancel"
-        @before-ok="handleBeforeOk1"
+        @ok="handleBeforeOk1"
       >
         <div v-if="form[0]">
           <a-form :model="form" layout="vertical">
@@ -245,13 +259,10 @@
                 <a-input v-model="form[0].span" />
               </a-form-item>
               <a-form-item label="标签">
-                <a-select v-model="form[0].tag" default-value="咨询·培训">
-                  <a-option value="咨询·培训">咨询·培训</a-option>
-                  <a-option value="AR/VR/MR眼镜方案">AR/VR/MR眼镜方案</a-option>
-                  <a-option value="IT/OT/MR集成">IT/OT/MR集成</a-option>
-                  <a-option value="数据中心智能化建设服务"
-                    >数据中心智能化建设服务</a-option
-                  >
+                <a-select v-model="form[0].tag" :options="list">
+                  <a-option v-for="x in list" :key="x" :value="x">{{
+                    x
+                  }}</a-option>
                 </a-select>
               </a-form-item></div
             >
@@ -259,7 +270,7 @@
             <a-form-item label="上传图标" required>
               <div
                 ><a-upload
-                  action="https://106.14.32.178:8080/api/system/upload"
+                  action="https://www.jungt.com:8080/api/system/upload"
                   :file-list="file ? [file] : []"
                   :show-file-list="false"
                   @change="onChange"
@@ -308,7 +319,7 @@
                     </div>
                   </template>
                 </a-upload>
-                <div style="">图片宽高限制为：100×100</div></div
+                <div style="">图片宽高限制为：810×190</div></div
               >
             </a-form-item>
           </a-form>
@@ -335,7 +346,7 @@
             title="编辑数据"
             width="600px"
             @cancel="handleCancel"
-            @before-ok="handleBeforeOk"
+            @ok="handleBeforeOk"
           >
             <div v-if="form[1]">
               <a-form :model="form" layout="vertical">
@@ -375,24 +386,15 @@
                   >
                     <a-input v-model="form[1].span" />
                   </a-form-item>
-                  <a-form-item field="mark" label="标签">
-                    <a-select v-model="form[1].tag" :default-value="record.tag">
-                      <a-option value="咨询·培训">咨询·培训</a-option>
-                      <a-option value="AR/VR/MR眼镜方案"
-                        >AR/VR/MR眼镜方案</a-option
-                      >
-                      <a-option value="IT/OT/MR集成">IT/OT/MR集成</a-option>
-                      <a-option value="数据中心智能化建设服务"
-                        >数据中心智能化建设服务</a-option
-                      >
-                    </a-select>
-                  </a-form-item></div
-                >
+                  <a-form-item label="标签">
+                    <a-select v-model="form[1].tag" :options="list">
+                    </a-select> </a-form-item
+                ></div>
 
                 <a-form-item field="id" label="上传图标" required>
                   <div
                     ><a-upload
-                      action="https://106.14.32.178:8080/api/system/upload"
+                      action="https://www.jungt.com:8080/api/system/upload"
                       :file-list="file ? [file] : []"
                       :show-file-list="false"
                       @change="onChange"
@@ -442,7 +444,7 @@
                         </div>
                       </template>
                     </a-upload>
-                    <div style="">图片宽高限制为：100×100</div></div
+                    <div style="">图片宽高限制为：810×190</div></div
                   >
                 </a-form-item>
               </a-form>

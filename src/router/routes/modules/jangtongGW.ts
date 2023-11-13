@@ -3,7 +3,7 @@ import { AppRouteRecordRaw } from '../types';
 
 const DASHBOARD: AppRouteRecordRaw = {
   path: '/jiangtong',
-  name: 'jiangtong',
+  name: 'Jiangtong',
   component: DEFAULT_LAYOUT,
   meta: {
     locale: 'menu.jiangtong',
@@ -19,7 +19,7 @@ const DASHBOARD: AppRouteRecordRaw = {
       meta: {
         locale: 'menu.jiangtong.index',
         requiresAuth: true,
-        roles: ['admin'],
+        roles: ['*'],
       },
       children: [
         {
@@ -51,6 +51,17 @@ const DASHBOARD: AppRouteRecordRaw = {
             import('@/views/jiangtong/index/technique/index.vue'),
           meta: {
             locale: 'menu.jiangtong.index.technique',
+            requiresAuth: true,
+            roles: ['*'],
+          },
+        },
+        {
+          path: 'servesTag',
+          name: 'ServesTag',
+          component: () =>
+            import('@/views/jiangtong/index/servesTag/index.vue'),
+          meta: {
+            locale: 'menu.jiangtong.index.servesTag',
             requiresAuth: true,
             roles: ['*'],
           },
@@ -194,6 +205,16 @@ const DASHBOARD: AppRouteRecordRaw = {
           },
         },
       ],
+    },
+    {
+      path: 'wxjob',
+      name: 'Wxjob',
+      component: () => import('@/views/jiangtong/wxjob/index.vue'),
+      meta: {
+        locale: 'menu.jiangtong.wxjob',
+        requiresAuth: true,
+        roles: ['*'],
+      },
     },
   ],
 };

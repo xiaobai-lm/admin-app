@@ -4,7 +4,7 @@
 
   const show = ref(true);
 
-  const columns = [
+  const columns: any = [
     {
       title: '姓名',
       dataIndex: 'name',
@@ -60,7 +60,7 @@
 <template>
   <div
     class="bg-white mxy rounded pxy flex flex-col items"
-    style="height: 500px; border-radius: 10px"
+    style="height: 650px; border-radius: 10px"
   >
     <div style="margin: 20px 20px 0 20px"
       ><a-table :columns="columns" :data="data">

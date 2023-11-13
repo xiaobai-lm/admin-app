@@ -1,5 +1,5 @@
 export default {
-  path: 'https://arco.design',
+  path: 'https://www.jungt.com/',
   name: 'arcoWebsite',
   meta: {
     locale: 'menu.arcoWebsite',
