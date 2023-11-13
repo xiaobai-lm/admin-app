@@ -278,7 +278,7 @@
                   </a-form-item>
                   <div style="margin-top: 30px">
                     <a-date-picker
-                      v-model="form[1].createdTime"
+                      v-model="form[1].time"
                       style="width: 200px"
                     />
                   </div>
